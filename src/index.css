@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  /* fonts */
+  --font-heading: "Rammetto One", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* primary */
+  --color-primary-default: #402818;
+  --color-primary-bg: #f5e8d7;
+  --color-primary-bg-2: #352012;
+  --color-primary-fill: #c6a272;
+
+  /* secondary 1 - pink */
+  --color-secondary-1-fill: #eaafba;
+  --color-secondary-1-text: #d06f81;
+  --color-secondary-1-bg: #F2CFD6;
+  --color-secondary-1-bg-2: #e096a4;
+
+  /* secondary 2 - lavender */
+  --color-secondary-2-fill: #c6b4ce;
+  --color-secondary-2-text: #8b669b;
+  --color-secondary-2-bg: #DDD2E2;
+  --color-secondary-2-bg-2: #b097bb;
+
+  /* secondary 3 - yellow/gold */
+  --color-secondary-3-fill: #eeda9f;
+  --color-secondary-3-text: #daad26;
+  --color-secondary-3-bg: #F5E9C5;
+  --color-secondary-3-bg-2: #e6c971;
+
+  /* neutrals */
+  --color-neutral-black: #000000;
+  --color-neutral-white: #ffffff;
+  --color-neutral-gray: #efefef;
+
+  /* extras seen in Figma variables */
+  --color-yellow-300: #e6c971;
+  --color-brown-200: #c6a272;
+
+  /* type scale - heading (Rammetto One) */
+  --text-heading-h1: 60px;
+  --text-heading-h1--line-height: 68px;
+  --text-heading-h2: 48px;
+  --text-heading-h2--line-height: 68px;
+  --text-heading-h3: 36px;
+  --text-heading-h3--line-height: 56px;
+  --text-heading-h5: 24px;
+  --text-heading-h5--line-height: 32px;
+  --text-heading-h6: 20px;
+  --text-heading-h6--line-height: 28px;
+
+  /* type scale - body (Plus Jakarta Sans) */
+  --text-body-3xl: 40px;
+  --text-body-lg: 20px;
+  --text-body-lg--line-height: 28px;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 22px;
+
+  /* radius */
+  --radius-button: 52px;
+  --radius-card: 20px;
+  --radius-accordion: 16px;
+
+  /* spacing scale (from Figma; fill in as more get defined) */
+  --spacing-200: 8px;
+  --spacing-500: 20px;
+  --spacing-1300: 52px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-neutral-white);
+  color: var(--color-primary-default);
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+/* Infinite marquee scroll — track content is duplicated (x2), animation
+   slides exactly -50% so the loop point is seamless. */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 24s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 86s linear infinite;
+}
