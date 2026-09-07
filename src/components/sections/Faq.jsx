@@ -1,4 +1,5 @@
 import { useState } from "react"
+import PillButton from "../PillButton"
 
 const faqs = [
   {
@@ -105,14 +106,19 @@ function Faq() {
             </div>
 
             <a
-              href="#faq"
-              className="mt-8 flex w-fit items-center gap-4 rounded-button bg-primary-default py-2 pl-6 pr-2 font-heading text-white transition-opacity hover:opacity-90"
-            >
-              EXPLORE ALL
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-primary-default">
-                →
-              </span>
-            </a>
+              
+  href="#faq"
+  className="group/pill mt-8 flex w-fit items-center gap-4 overflow-hidden rounded-button bg-primary-default py-2 pl-6 pr-2 font-heading transition-transform duration-100 active:scale-[0.97]"
+>
+  <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+    EXPLORE ALL
+  </span>
+
+  <span className="relative flex h-9 w-9 items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1">
+    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[12]" />
+    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+  </span>
+</a>
           </div>
         </div>
       </div>

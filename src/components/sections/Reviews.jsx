@@ -90,24 +90,35 @@ function Reviews() {
             The People Have Spoken
           </h2>
 
-          <div className="flex shrink-0 items-center gap-3">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              aria-label="Previous reviews"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-default text-white transition-opacity hover:opacity-90"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              aria-label="Next reviews"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-default text-white transition-opacity hover:opacity-90"
-            >
-              ›
-            </button>
-          </div>
+<div className="flex shrink-0 items-center gap-0">
+  <button
+    type="button"
+    onClick={() => scrollByCard(-1)}
+    aria-label="Previous reviews"
+    className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
+  >
+    <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+    <img
+      src="/arrow2.svg"
+      alt=""
+      className="relative h-[50%] w-auto transition-transform duration-300 group-hover/arrow:-translate-x-1"
+    />
+  </button>
+
+  <button
+    type="button"
+    onClick={() => scrollByCard(1)}
+    aria-label="Next reviews"
+    className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
+  >
+    <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+    <img
+      src="/arrow2.svg"
+      alt=""
+      className="relative h-[50%] w-auto rotate-[180deg] transition-transform duration-300 group-hover/arrow:-translate-x-1"
+    />
+  </button>
+</div>
         </div>
       </div>
 
@@ -115,15 +126,15 @@ function Reviews() {
           carousel below), not just the heading block, so they stay anchored
           to the cards regardless of how tall the heading area is at a given
           screen size. */}
-    <img
+  <img
   src="/heart.svg"
   alt=""
-  className="pointer-events-none absolute left-[14%] top-[76%] w-[19%] max-w-[100px] sm:left-[8%] sm:top-[72%] sm:w-[16%] md:left-[10%] md:top-[72%] md:w-[10%]"
+  className="pointer-events-none absolute hidden left-[14%] top-[76%] w-[19%] max-w-[100px] sm:left-[8%] sm:top-[72%] sm:block sm:w-[16%] md:left-[10%] md:top-[72%] md:w-[10%]"
 />
 <img
   src="/cookies.svg"
   alt=""
-  className="pointer-events-none absolute right-[4%] top-[35%] w-[19%] max-w-[110px] sm:right-[6%] sm:top-[30%] sm:w-[16%] md:right-[8%] md:top-[30%] md:w-[15%]"
+  className="pointer-events-none absolute hidden right-[4%] top-[35%] w-[19%] max-w-[110px] sm:right-[6%] sm:top-[30%] sm:block sm:w-[16%] md:right-[8%] md:top-[30%] md:w-[15%]"
 />
 
       {/* Full-bleed carousel — no section padding, so cards run edge to edge */}

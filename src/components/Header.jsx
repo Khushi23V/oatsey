@@ -40,23 +40,29 @@ function Header({ hidden = false }) {
         </nav>
 
         <a
-          href="#signup"
-          className="hidden shrink-0 items-center gap-3 whitespace-nowrap rounded-button bg-primary-default py-1.5 pl-5 pr-1.5 text-body-md font-heading text-white transition-opacity hover:opacity-90 md:flex"
-        >
-          SIGN UP
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white" >
-            <img src="/arrow.svg" alt="" className="h-[50%] w-auto" />
-            </span>
-        </a>
+          
+  href="#signup"
+  className="group/pill hidden shrink-0 items-center gap-3 overflow-hidden whitespace-nowrap rounded-button bg-primary-default py-1.5 pl-5 pr-1.5 text-body-md font-heading transition-transform duration-100 active:scale-[0.97] md:flex"
+>
+  <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+    SIGN UP
+  </span>
+
+  <span className="relative flex h-7 w-7 items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1">
+    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[10]" />
+    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+  </span>
+</a>
 
         {/* Mobile-only account icon */}
         <a
-          href="#account"
-          aria-label="Account"
-          className="h-[45px] w-[45px] shrink-0 md:hidden"
-        >
-          <img src="/login.svg" alt="" className="h-full w-full" />
-        </a>
+          
+  href="#account"
+  aria-label="Account"
+  className="h-[50px] w-[50px] shrink-0 cursor-pointer transition-all duration-150 active:scale-[0.94] active:invert md:hidden"
+>
+  <img src="/login.svg" alt="" className="h-full w-full" />
+</a>
       </div>
     </header>
   )

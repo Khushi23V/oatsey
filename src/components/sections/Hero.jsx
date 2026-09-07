@@ -1,5 +1,6 @@
-/* One SVG per cookie — circle + cookie already composed. Positions and sizes
-   are % of the 402x875 frame, so the whole group scales with the viewport. */
+import PillButton from "../PillButton"
+
+
 const mobileCookies = [
   // top right
   { src: "/cookie-home.svg", left: "42.3%", top: "-1%", width: "60.7%" },
@@ -44,14 +45,19 @@ function MobileHero() {
         </p>
 
         <a
-          href="#shop"
-          className="absolute left-[31.3%] top-[57.4%] z-10 inline-flex h-[38px] items-center gap-3 rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] text-white transition-opacity hover:opacity-90"
-        >
-          SHOP NOW
-          <span className="flex aspect-square h-[24px] items-center justify-center rounded-full bg-white text-[10px] text-primary-default">
-            <img src="/arrow.svg" alt="" className="h-[50%] w-auto" />
-          </span>
-        </a>
+
+  href="#shop"
+  className="group/pill absolute left-[31.3%] top-[57.4%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
+>
+  <span className="relative text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+    SHOP NOW
+  </span>
+
+  <span className="relative flex aspect-square h-[24px] items-center justify-center text-[10px] transition-transform duration-300 group-hover/pill:translate-x-1">
+    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[10]" />
+    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+  </span>
+</a>
       </div>
 
       {/* Room for the lower part of the bottom cookie */}
@@ -106,14 +112,21 @@ function DesktopHero() {
 
           {/* 20 / 1040 = 1.92cqw */}
           <a
-            href="#shop"
-            className="absolute left-[75.1%] top-[78.2%] z-30 inline-flex h-[14.7%] items-center gap-[1.54cqw] whitespace-nowrap rounded-button bg-primary-default pl-[1.92%] pr-[0.77%] font-heading text-[max(13px,1.92cqw)] text-white transition-opacity hover:opacity-90"
-          >
-            SHOP NOW
-            <span className="flex aspect-square h-[78%] items-center justify-center rounded-full bg-white text-[max(10px,1.4cqw)] text-primary-default">
-              <img src="/arrow.svg" alt="" className="h-[50%] w-auto" />
-            </span>
-          </a>
+
+  href="#shop"
+  className="group/pill absolute left-[75.1%] top-[78.2%] z-30 inline-flex h-[14.7%] items-center gap-[1.54cqw] overflow-hidden whitespace-nowrap rounded-button bg-primary-default pl-[1.92%] pr-[0.77%] font-heading text-[max(13px,1.92cqw)] transition-transform duration-100 active:scale-[0.97]"
+>
+<span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+  SHOP NOW
+</span>
+
+  {/* The sweep lives inside the circle and fills it exactly, so it's
+      centred by definition — no percentage-unit mismatch to reconcile. */}
+  <span className="relative flex aspect-square h-[78%] items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1">
+    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[12]" />
+    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+  </span>
+</a>
         </div>
       </div>
     </div>

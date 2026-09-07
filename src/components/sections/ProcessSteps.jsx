@@ -157,34 +157,38 @@ function ProcessCard({ step, className = "" }) {
 
 function ProcessSteps() {
   return (
-   <section className="px-6 pt-16 pb-16 md:px-10 md:py-24">
-      {/* Mobile: heading pins together with the card stack (same shared
-          containing block), then both release at once — straight into
-          Reviews, no dead scroll. Header nav is ~72-80px tall, hence top-20. */}
-      <div className="relative sm:hidden">
-        <div className="sticky top-20 z-40 -mx-6 bg-white px-6 pb-6">
-          <h2 className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black">
-            The Soul Of
-            <br />
-            Our Kitchen
-          </h2>
-        </div>
+    <>
+      {/* Mobile */}
+<section className="px-6 pt-16 pb-0 sm:hidden">
+  <div className="relative">
+    {/* Heading pins under the header and holds through the stack. Its
+        track ends 80vh early — one wrapper's worth — so it releases at
+        the same moment the last card does. */}
+    <div className="absolute inset-x-0 top-0 h-[calc(100%-80vh)]">
+      <h2 className="sticky top-32 z-40 text-center font-heading text-[32px] uppercase leading-[1.1] text-black">
+        The Soul Of
+        <br />
+        Our Kitchen
+      </h2>
+    </div>
 
-        <div className="space-y-[9vh] pb-[8vh]">
-          {steps.map((step, index) => (
-            <div
-              key={step.number}
-              className="sticky top-[24vh]"
-              style={{ zIndex: index + 1 }}
-            >
-              <ProcessCard step={step} className="mx-auto w-[300px]" />
-            </div>
-          ))}
+    {/* pt reserves the flow space the now-absolute heading vacated */}
+    <div className="-mb-[35vh] pt-[150px]">
+      {steps.map((step, index) => (
+        <div
+          key={step.number}
+          className="sticky top-[262px] h-[80vh]"
+          style={{ zIndex: index + 1 }}
+        >
+          <ProcessCard step={step} className="mx-auto w-[300px]" />
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</section>
 
-      {/* Desktop / tablet — unchanged */}
-      <div className="hidden sm:block">
+      {/* Desktop — unchanged */}
+      <section className="hidden px-6 py-16 sm:block md:px-10 md:py-24">
         <h2 className="text-center font-heading text-[48px] uppercase leading-[1.1] text-black">
           The Soul Of
           <br />
@@ -202,8 +206,8 @@ function ProcessSteps() {
             />
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 
