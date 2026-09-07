@@ -1,38 +1,91 @@
+import { useEffect, useState } from "react"
 import PillButton from "../PillButton"
-
 
 const mobileCookies = [
   // top right
   { src: "/cookie-home.svg", left: "42.3%", top: "-1%", width: "60.7%" },
   // left
-  { src: "/cookie-home2.svg", left: "-1.6%", top: "11.5%", width: "35.1%" },
+  { src: "/cookie-home2.svg", left: "-1.6%", top: "9.5%", width: "35.1%" },
   // bottom — oversized so its widest band clips both side edges inside the
   // viewport; the rest continues below the fold.
   { src: "/cookie-home3.svg", left: "50%", top: "58%", width: "165%", centered: true },
 ]
 
-function MobileHero() {
+function MobileHero({ ready }) {
+  const [scrollY, setScrollY] = useState(0)
+  const [entered, setEntered] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // The entrance pop and the scroll rotation both write to `transform`, so
+  // they can't run at once. The pop for the third cookie finishes at ~860ms
+  // (260ms delay + 600ms duration); after that the rotation takes over.
+  useEffect(() => {
+    if (!ready) return
+    const id = setTimeout(() => setEntered(true), 900)
+    return () => clearTimeout(id)
+  }, [ready])
+
   return (
     <div className="md:hidden">
       <div className="relative h-screen w-full">
-        {mobileCookies.map((c) => (
-          <img
-            key={c.src}
-            src={c.src}
-            alt=""
-            className={`absolute max-w-none ${c.centered ? "-translate-x-1/2" : ""}`}
-            style={{ left: c.left, top: c.top, width: c.width }}
-          />
-        ))}
+        {/* Cookies stagger in once the loader hands over. opacity-0 holds them
+            hidden until then; the centred one needs its own keyframe so the
+            translate isn't lost to the scale transform. */}
+        {mobileCookies.map((c, i) => {
+          const spinning = c.centered && entered
+
+          return (
+            <img
+              key={c.src}
+              src={c.src}
+              alt=""
+              className={`absolute max-w-none ${spinning ? "" : "opacity-0"} ${
+                spinning
+                  ? ""
+                  : ready
+                    ? c.centered
+                      ? "animate-cookie-pop-centered"
+                      : "animate-cookie-pop"
+                    : c.centered
+                      ? "-translate-x-1/2"
+                      : ""
+              }`}
+              style={{
+                left: c.left,
+                top: c.top,
+                width: c.width,
+                animationDelay: `${i * 130}ms`,
+                ...(spinning && {
+                  opacity: 1,
+                  transform: `translateX(-50%) rotate(${scrollY * 0.08}deg)`,
+                }),
+              }}
+            />
+          )
+        })}
 
         {/* Heading — "healthy" is inline in the gap, sized in em so it tracks
-            the heading and stays centred between SAY and COOKIES. */}
-        <h1 className="absolute left-[49.9%] top-[38.3%] z-10 w-[84.3%] -translate-x-1/2 text-center text-[clamp(28px,9vw,36px)] font-normal leading-[1.389] tracking-tight text-primary-default">
+            the heading and stays centred between SAY and COOKIES. The spacer
+            opens on load, then the word drops into the space it made. */}
+        <h1 className="absolute left-[49.9%] top-[37.3%] z-10 w-[84.3%] -translate-x-1/2 text-center text-[clamp(28px,9vw,36px)] font-normal leading-[1.389] tracking-tight text-primary-default">
           DID SOMEONE
           <br />
           SAY
-          <span className="relative inline-block w-[0.6em] align-middle">
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap font-heading text-[0.28em] leading-none text-primary-fill">
+          <span
+            className={`relative inline-block align-middle ${
+              ready ? "animate-gap-open" : "w-0"
+            }`}
+          >
+            <span
+              className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading text-[0.28em] leading-none tracking-wide text-primary-fill opacity-0 ${
+                ready ? "animate-healthy-pop" : ""
+              }`}
+            >
               healthy
             </span>
           </span>
@@ -43,21 +96,20 @@ function MobileHero() {
           Cookies made from oats, not shortcuts. No refined flour, no refined
           sugar, just small batches.
         </p>
+<a
+        
+          href="#shop"
+          className="group/pill absolute left-[31.3%] top-[56.4%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
+        >
+          <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+            SHOP NOW
+          </span>
 
-        <a
-
-  href="#shop"
-  className="group/pill absolute left-[31.3%] top-[57.4%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
->
-  <span className="relative text-white transition-colors duration-300 group-hover/pill:text-primary-default">
-    SHOP NOW
-  </span>
-
-  <span className="relative flex aspect-square h-[24px] items-center justify-center text-[10px] transition-transform duration-300 group-hover/pill:translate-x-1">
-    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[10]" />
-    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
-  </span>
-</a>
+          <span className="relative flex aspect-square h-[24px] items-center justify-center text-[10px] transition-transform duration-300 group-hover/pill:translate-x-1">
+            <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[10]" />
+            <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+          </span>
+        </a>
       </div>
 
       {/* Room for the lower part of the bottom cookie */}
@@ -66,7 +118,24 @@ function MobileHero() {
   )
 }
 
-function DesktopHero() {
+function DesktopHero({ ready }) {
+  const [entered, setEntered] = useState(false)
+
+  // The last cookie's pop ends at ~860ms (260ms delay + 600ms duration).
+  // Handing over to the hover transition after that keeps the two
+  // transform-writers from fighting.
+  useEffect(() => {
+    if (!ready) return
+    const id = setTimeout(() => setEntered(true), 900)
+    return () => clearTimeout(id)
+  }, [ready])
+
+  const cookieClass = entered
+    ? "hover-grow-21"
+    : ready
+      ? "animate-cookie-pop-21 opacity-0"
+      : "rotate-[21deg] opacity-0"
+
   return (
     <div className="hidden md:block">
       <div className="relative mx-auto w-full max-w-5xl lg:max-w-[1040px]">
@@ -74,20 +143,25 @@ function DesktopHero() {
             using the Figma ratios, so the whole composition scales with the
             card instead of the viewport. */}
         <div className="@container relative aspect-[1040/420] rounded-tl-[316.5px] rounded-tr-[316.5px] rounded-bl-[316.5px] rounded-br-[45px] bg-white shadow-[0px_4px_20px_0px_#c6a272]">
+          {/* The 21deg rotation lives in the keyframe, then in the hover rule —
+              never as a class once either is active, since both own transform. */}
           <img
-            src="/cookie-1.png"
+            src="/cookie-1.webp"
             alt=""
-            className="absolute left-[-11.7%] top-[8.4%] z-10 w-[35.7%] rotate-[21deg]"
+            className={`absolute left-[-11.7%] top-[8.4%] z-10 w-[35.7%] ${cookieClass}`}
+            style={{ animationDelay: "0ms" }}
           />
           <img
-            src="/cookie.png"
+            src="/cookie.webp"
             alt=""
-            className="absolute left-[78.4%] top-[8.4%] z-10 w-[30.8%] rotate-[21deg]"
+            className={`absolute left-[78.4%] top-[8.4%] z-10 w-[30.8%] ${cookieClass}`}
+            style={{ animationDelay: "130ms" }}
           />
           <img
-            src="/cookie-2.png"
+            src="/cookie-2.webp"
             alt=""
-            className="absolute left-[55.8%] top-[58.1%] z-35 w-[28.2%] rotate-[21deg]"
+            className={`absolute left-[55.8%] top-[58.1%] z-35 w-[28.2%] ${cookieClass}`}
+            style={{ animationDelay: "260ms" }}
           />
 
           {/* 89 / 1040 = 8.56cqw */}
@@ -95,8 +169,16 @@ function DesktopHero() {
             DID SOMEONE
             <br />
             SAY
-            <span className="relative inline-block w-[0.6em] align-middle">
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap font-heading text-[0.225em] leading-none text-primary-fill">
+            <span
+              className={`relative inline-block align-middle ${
+                ready ? "animate-gap-open" : "w-0"
+              }`}
+            >
+              <span
+                className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading text-[0.225em] leading-none tracking-wide text-primary-fill opacity-0 ${
+                  ready ? "animate-healthy-pop" : ""
+                }`}
+              >
                 healthy
               </span>
             </span>
@@ -104,7 +186,7 @@ function DesktopHero() {
           </h1>
 
           {/* 16 / 1040 = 1.54cqw, floored so it stays legible */}
-          <p className="absolute left-[9.3%] top-[67.3%] z-0 w-[52.4%] font-body text-[max(13px,1.54cqw)] font-normal leading-[1.375] text-neutral-black">
+          <p className="absolute left-[11.3%] top-[74.3%] z-0 w-[50.4%] font-body text-[max(13px,1.44cqw)] font-normal leading-[1.375] text-neutral-black">
             Cookies made from oats, not shortcuts. No refined flour, no refined
             sugar, just small batches. Baked with love and meant for everyday
             cravings.
@@ -112,35 +194,34 @@ function DesktopHero() {
 
           {/* 20 / 1040 = 1.92cqw */}
           <a
+            href="#shop"
+            className="group/pill absolute left-[75.1%] top-[78.2%] z-30 inline-flex h-[14.7%] items-center gap-[1.54cqw] overflow-hidden whitespace-nowrap rounded-button bg-primary-default pl-[1.92%] pr-[0.77%] font-heading text-[max(13px,1.92cqw)] transition-transform duration-100 active:scale-[0.97]"
+          >
+            <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+              SHOP NOW
+            </span>
 
-  href="#shop"
-  className="group/pill absolute left-[75.1%] top-[78.2%] z-30 inline-flex h-[14.7%] items-center gap-[1.54cqw] overflow-hidden whitespace-nowrap rounded-button bg-primary-default pl-[1.92%] pr-[0.77%] font-heading text-[max(13px,1.92cqw)] transition-transform duration-100 active:scale-[0.97]"
->
-<span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
-  SHOP NOW
-</span>
-
-  {/* The sweep lives inside the circle and fills it exactly, so it's
-      centred by definition — no percentage-unit mismatch to reconcile. */}
-  <span className="relative flex aspect-square h-[78%] items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1">
-    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[12]" />
-    <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
-  </span>
-</a>
+            {/* The sweep lives inside the circle and fills it exactly, so it's
+                centred by definition — no percentage-unit mismatch to reconcile. */}
+            <span className="relative flex aspect-square h-[78%] items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1">
+              <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[12]" />
+              <img src="/arrow.svg" alt="" className="relative h-[50%] w-auto" />
+            </span>
+          </a>
         </div>
       </div>
     </div>
   )
 }
 
-function Hero() {
+function Hero({ ready }) {
   return (
     <section
       id="home"
       className="relative md:flex md:flex-col md:px-10 md:pt-[110px] md:pb-[70px]"
     >
-      <MobileHero />
-      <DesktopHero />
+      <MobileHero ready={ready} />
+      <DesktopHero ready={ready} />
     </section>
   )
 }

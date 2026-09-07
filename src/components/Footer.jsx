@@ -86,7 +86,7 @@ function EmailSignup() {
             }}
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             placeholder="Enter your email address here.."
-            className="relative z-10 h-full w-full bg-transparent pl-5 pr-14 font-body text-[14px] text-white placeholder-white/50 outline-none sm:text-[16px]"
+            className="relative z-10 h-full w-full bg-transparent pl-5 pr-14 font-body text-[16px] text-white placeholder-white/50 outline-none sm:text-[16px]"
           />
         )}
 

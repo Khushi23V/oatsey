@@ -86,7 +86,7 @@ function Faq() {
 
         <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:items-start">
           <img
-            src="/faq-image.png"
+            src="/faq-image.webp"
             alt=""
             className="w-full rounded-[20px] object-cover"
           />

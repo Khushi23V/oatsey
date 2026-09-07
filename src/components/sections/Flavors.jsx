@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react"
+
 const flavors = [
   {
     name: "OG Chocolate Chip",
@@ -44,13 +46,48 @@ function ColorBar() {
 }
 
 function Flavors() {
+  const ref = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+  const [typed, setTyped] = useState(false)
+
+useEffect(() => {
+  if (!revealed) return
+  // Longest total: last letter's delay plus its own duration.
+  const id = setTimeout(() => setTyped(true), 4200)
+  return () => clearTimeout(id)
+}, [revealed])
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Each flavour starts once the previous one is roughly done, so the five
+  // names type in sequence rather than all at once.
+  let letterOffset = 0
+
   return (
-    <section className="bg-white py-12 md:py-20">
+    <section ref={ref} className="bg-white py-12 md:py-20">
       <ColorBar />
 
       <div className="flex flex-col items-center gap-[6px] px-4 py-10 sm:py-16 md:py-20">
         {flavors.map((flavor, index) => {
           const iconOnLeft = index % 2 === 0
+          const startAt = letterOffset
+          letterOffset += flavor.name.length + 4 // small pause between names
 
           return (
             <div
@@ -65,10 +102,24 @@ function Flavors() {
                 />
               )}
 
+              {/* Letters are inline-block so they can scale; spaces get a
+                  non-breaking space so the word gaps survive the split. */}
               <span
                 className={`whitespace-nowrap font-heading uppercase leading-tight text-black transition-colors duration-300 ${flavor.hoverColor}`}
               >
-                {flavor.name}
+                {flavor.name.split("").map((char, ci) => (
+                  <span
+  key={ci}
+  className={`inline-block transition-all duration-400 ease-[cubic-bezier(0.34,1.8,0.64,1)] ${
+    revealed
+      ? "translate-y-0 scale-100 opacity-100"
+      : "translate-y-[0.25em] scale-50 opacity-0"
+  }`}
+style={{ transitionDelay: typed ? "0ms" : `${(startAt + ci) * 35}ms` }}
+>
+                    {char === " " ? "\u00A0" : char}
+                  </span>
+                ))}
               </span>
 
               {!iconOnLeft && (

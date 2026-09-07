@@ -15,21 +15,33 @@ import Newsletter from "./components/sections/Newsletter"
 import Footer from "./components/Footer"
 
 function App() {
-  // Always set loading to true on initial render
   const [loading, setLoading] = useState(true)
   const [footerVisible, setFooterVisible] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   const handleLoaderDone = () => {
-    // Removed the sessionStorage logic here
     setLoading(false)
   }
 
-  // Lock the page while the loader is up so it can't be scrolled behind
+  // Lock the page while the loader is up. Both html and body are needed:
+  // index.css sets html { overflow-x: clip }, and body's overflow only
+  // propagates to the viewport when html's overflow is `visible` — so
+  // locking body alone leaves html scrolling. Resetting to "" afterwards
+  // restores the stylesheet value.
   useEffect(() => {
-    document.body.style.overflow = loading ? "hidden" : ""
+    const html = document.documentElement
+
+    if (loading) {
+      html.style.overflow = "hidden"
+      document.body.style.overflow = "hidden"
+    } else {
+      html.style.overflow = ""
+      document.body.style.overflow = ""
+    }
+
     return () => {
+      html.style.overflow = ""
       document.body.style.overflow = ""
     }
   }, [loading])
@@ -64,9 +76,15 @@ function App() {
     <>
       {loading && <Loader onDone={handleLoaderDone} />}
 
+      {/* Everything above the footer sits in its own elevated, opaque layer.
+          The footer (a normal-flow sibling below this) uses position:sticky
+          + bottom-0, so once the page scrolls far enough that the footer's
+          own space comes into view, it pins to the bottom of the viewport
+          while this whole wrapper keeps scrolling up and over it — giving
+          the "footer pops up from behind" reveal effect. */}
       <div className="relative z-10 min-h-screen bg-white text-primary-default font-body">
         <Header hidden={footerVisible || (isMobile && !scrolled)} />
-        <Hero />
+        <Hero ready={!loading} />
         <Marquees />
         <Story />
         <GalleryScatter />

@@ -66,14 +66,14 @@ function Reviews() {
   const scrollByCard = (direction) => {
     const el = scrollRef.current
     if (!el) return
-    const card = el.firstChild
+    const card = el.children[0]
     const gap = 40 // matches gap-10
     const distance = card ? card.offsetWidth + gap : 400
     el.scrollBy({ left: direction * distance, behavior: "smooth" })
   }
 
   return (
-    <section className="relative isolate overflow-hidden">
+   <section className="relative isolate z-20 overflow-hidden">
       {/* Beige drip background — scaled up slightly for more presence */}
       <img
         src="/review-bg.svg"

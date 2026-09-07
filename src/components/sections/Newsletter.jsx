@@ -98,7 +98,7 @@ useEffect(() => {
     <section className="px-6 py-16 md:px-10 md:py-24">
       <div className="group relative mx-auto max-w-6xl overflow-hidden rounded-[20px] md:rounded-[40px]">
         <img
-          src="/news.png"
+          src="/news.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -130,7 +130,7 @@ useEffect(() => {
     placeholder="name@email.com"
     onFocus={() => setFocused(true)}
     onBlur={() => setFocused(false)}
-    className="w-full rounded-button border border-white/40 bg-white/10 px-5 py-3 font-body text-[14px] text-white placeholder-white/60 outline-none transition-colors focus:border-white sm:max-w-xs sm:text-[16px]"
+    className="w-full rounded-button border border-white/40 bg-white/10 px-5 py-3 font-body text-[16px] sm:text-[16px] text-white placeholder-white/60 outline-none transition-colors focus:border-white sm:max-w-xs sm:text-[16px]"
   />
 
   {/* Coupon stub — the notches are two circles the colour of the card
@@ -139,6 +139,7 @@ useEffect(() => {
       rotation language of the process cards. */}
 <PillButton
   inverted
+  className="self-start sm:self-auto"
   onMouseEnter={() => setFocused(true)}
   onMouseLeave={() => setFocused(false)}
 >

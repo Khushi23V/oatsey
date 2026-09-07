@@ -30,7 +30,7 @@ function Marquees() {
     <section className="relative h-64 overflow-hidden bg-white sm:h-72 md:h-80">
       {/* Color marquee — svg, sits behind the benefits strip. Wider band on
           narrow screens so the rotation doesn't leave gaps at the corners. */}
-      <div className="absolute left-1/2 top-1/2 z-0 w-[160%] -translate-x-1/2 -translate-y-1/2 rotate-[8.46deg] overflow-hidden sm:w-[120%]">
+      <div className="absolute left-1/2 top-1/2 z-0 w-[160%] overflow-hidden [transform:translate3d(-50%,-50%,0)_rotate(8.46deg)] [backface-visibility:hidden] sm:w-[120%]">
         <div className="flex w-max animate-marquee-right items-center">
           {[...Array(2)].map((_, setIndex) => (
             <div key={setIndex} className="flex items-center">

@@ -173,7 +173,7 @@ function ProcessSteps() {
     </div>
 
     {/* pt reserves the flow space the now-absolute heading vacated */}
-    <div className="-mb-[35vh] pt-[150px]">
+    <div className="-mb-[20vh] pt-[150px]">
       {steps.map((step, index) => (
         <div
           key={step.number}
