@@ -14,6 +14,19 @@ import Footer from "./components/Footer"
 
 function App() {
   const [footerVisible, setFooterVisible] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Below md the header stays hidden until the user starts scrolling; from md
+  // up it is visible by default. Either way it hides once the footer shows.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    const update = () => setIsMobile(mq.matches)
+
+    update()
+    mq.addEventListener("change", update)
+    return () => mq.removeEventListener("change", update)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +35,7 @@ function App() {
         document.documentElement.scrollHeight - 50 // small buffer
 
       setFooterVisible(scrolledToBottom)
+      setScrolled(window.scrollY > 10)
     }
 
     handleScroll() // check once on mount, in case the page loads already scrolled
@@ -37,8 +51,8 @@ function App() {
           own space comes into view, it pins to the bottom of the viewport
           while this whole wrapper keeps scrolling up and over it — giving
           the "footer pops up from behind" reveal effect. */}
-      <div className="relative z-10 min-h-screen bg-white text-black font-body">
-        <Header hidden={footerVisible} />
+      <div className="relative z-10 min-h-screen bg-white text-primary-default font-body">
+        <Header hidden={footerVisible || (isMobile && !scrolled)} />
         <Hero />
         <Marquees />
         <Story />

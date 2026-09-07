@@ -122,50 +122,86 @@ const steps = [
   },
 ]
 
+function ProcessCard({ step, className = "" }) {
+  return (
+    <div className={`relative aspect-[414.57/456.23] shrink-0 ${className}`}>
+      <ProcessCardShape
+        fillColor={step.fill}
+        bgColor={step.bg2}
+        className={`h-full w-full drop-shadow-lg ${step.shapeRotate}`}
+      />
+
+      <div
+        className={`absolute inset-0 flex flex-col p-8 pt-10 pb-12 sm:p-14 sm:pt-16 sm:pb-20 ${step.textRotate}`}
+      >
+        <span className="inline-flex w-fit items-center rounded-xl bg-white px-3 py-1.5">
+          <span
+            className={`font-heading text-[18px] sm:text-[24px] ${step.numberColor}`}
+          >
+            {step.number}
+          </span>
+        </span>
+
+        <h3 className="mt-3 font-heading text-[18px] uppercase leading-[1.2] text-white sm:mt-5 sm:text-[24px]">
+          {step.heading}
+        </h3>
+
+        <p className="mt-auto font-body text-[13px] leading-[18px] text-white sm:text-[16px] sm:leading-[22px]">
+          {step.body}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+
 function ProcessSteps() {
   return (
-    <section className="px-6 py-16 md:px-10 md:py-24">
-      <h2 className="text-center font-heading text-[48px] uppercase leading-[1.1] text-black">
-        The Soul Of
-        <br />
-        Our Kitchen
-      </h2>
+   <section className="px-6 pt-16 pb-16 md:px-10 md:py-24">
+      {/* Mobile: heading pins together with the card stack (same shared
+          containing block), then both release at once — straight into
+          Reviews, no dead scroll. Header nav is ~72-80px tall, hence top-20. */}
+      <div className="relative sm:hidden">
+        <div className="sticky top-20 z-40 -mx-6 bg-white px-6 pb-6">
+          <h2 className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black">
+            The Soul Of
+            <br />
+            Our Kitchen
+          </h2>
+        </div>
 
-      <div className="mt-16 flex flex-col items-center sm:flex-row sm:justify-center">
-        {steps.map((step, index) => (
-          <div
-            key={step.number}
-            className={`relative aspect-[414.57/456.23] w-[300px] shrink-0 ${
-              index === 0 ? "z-10" : index === 1 ? "z-30" : "z-20"
-            } ${index === 0 ? "" : "-mt-20 sm:mt-0 sm:-ml-16"} sm:w-[320px] md:w-[400px] lg:w-[440px]`}
-          >
-            <ProcessCardShape
-              fillColor={step.fill}
-              bgColor={step.bg2}
-              className={`h-full w-full drop-shadow-lg ${step.shapeRotate}`}
-            />
-
+        <div className="space-y-[9vh] pb-[8vh]">
+          {steps.map((step, index) => (
             <div
-              className={`absolute inset-0 flex flex-col p-8 pt-10 pb-12 sm:p-14 sm:pt-16 sm:pb-20 ${step.textRotate}`}
+              key={step.number}
+              className="sticky top-[24vh]"
+              style={{ zIndex: index + 1 }}
             >
-              <span className="inline-flex w-fit items-center rounded-xl bg-white px-3 py-1.5">
-                <span
-                  className={`font-heading text-[18px] sm:text-[24px] ${step.numberColor}`}
-                >
-                  {step.number}
-                </span>
-              </span>
-
-              <h3 className="mt-3 font-heading text-[18px] uppercase leading-[1.2] text-white sm:mt-5 sm:text-[24px]">
-                {step.heading}
-              </h3>
-
-              <p className="mt-auto font-body text-[13px] leading-[18px] text-white sm:text-[16px] sm:leading-[22px]">
-                {step.body}
-              </p>
+              <ProcessCard step={step} className="mx-auto w-[300px]" />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop / tablet — unchanged */}
+      <div className="hidden sm:block">
+        <h2 className="text-center font-heading text-[48px] uppercase leading-[1.1] text-black">
+          The Soul Of
+          <br />
+          Our Kitchen
+        </h2>
+
+        <div className="mt-16 flex justify-center">
+          {steps.map((step, index) => (
+            <ProcessCard
+              key={step.number}
+              step={step}
+              className={`${
+                index === 0 ? "z-10" : index === 1 ? "z-30" : "z-20"
+              } ${index === 0 ? "" : "-ml-16"} w-[320px] md:w-[400px] lg:w-[440px]`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )

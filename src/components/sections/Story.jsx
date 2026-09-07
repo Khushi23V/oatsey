@@ -1,6 +1,6 @@
 function Story() {
   return (
-    <section className="px-6 py-16 md:px-10 md:py-24">
+    <section className="px-6 pt-16 pb-6 md:px-10 md:py-24">
       <p className="mx-auto max-w-4xl text-center text-[24px] font-normal leading-[34px] text-black sm:text-[28px] sm:leading-[40px] md:text-[36px] md:leading-[50px]">
         We started{"    "}
         <img

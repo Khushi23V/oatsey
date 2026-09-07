@@ -1,6 +1,6 @@
 function GalleryScatter() {
   return (
-    <section className="px-6 py-16 md:px-10 md:py-0">
+    <section className="px-6 pt-6 pb-16 md:px-10 md:py-0">
       <div className="relative mx-auto aspect-[432/290] w-full max-w-4xl">
         <img
           src="/cookie-4.png"

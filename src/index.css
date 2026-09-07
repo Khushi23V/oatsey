@@ -14,7 +14,7 @@
   /* secondary 1 - pink */
   --color-secondary-1-fill: #eaafba;
   --color-secondary-1-text: #d06f81;
-  --color-secondary-1-bg: #F2CFD6;
+   --color-secondary-1-bg: #F2CFD6;
   --color-secondary-1-bg-2: #e096a4;
 
   /* secondary 2 - lavender */
@@ -68,11 +68,20 @@
   --spacing-1300: 52px;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--color-neutral-white);
-  color: var(--color-primary-default);
+  color: var(--color-neutral-black);
   margin: 0;
+  /* Clips off-screen decorative elements (Flavors hover icons at 60vw,
+     rotated ProcessSteps cards) so they don't create horizontal scroll.
+     `clip` rather than `hidden` — `hidden` would make this a scroll
+     container and break the footer's position:sticky reveal. */
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -101,9 +110,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-marquee-left {
-  animation: marquee-left 24s linear infinite;
+  animation: marquee-left 15s linear infinite;
 }
 
 .animate-marquee-right {
-  animation: marquee-right 86s linear infinite;
+  animation: marquee-right 100s linear infinite;
 }
