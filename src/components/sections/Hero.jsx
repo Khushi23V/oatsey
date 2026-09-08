@@ -11,6 +11,61 @@ const mobileCookies = [
   { src: "/cookie-home3.svg", left: "50%", top: "58%", width: "165%", centered: true },
 ]
 
+const HEALTHY_WORDS = ["healthy", "guilt-free", "tasty"]
+
+const WOBBLE_COLORS = [
+  "var(--color-primary-fill)",
+  "var(--color-secondary-1-text)",
+  "var(--color-secondary-2-text)",
+  "var(--color-secondary-3-text)",
+]
+
+// The slot is rotated -90deg by the healthy-pop keyframe, so the clip window
+// and the sliding stack live INSIDE that rotation — moving the stack along
+// its local Y axis reads as bottom-to-top against the rotated text.
+function HealthySlot({ ready, sizeClass }) {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % HEALTHY_WORDS.length)
+    }, 2600)
+    return () => clearInterval(id)
+  }, [])
+
+  return (
+    <span
+      className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading leading-none tracking-wide text-primary-fill opacity-0 ${sizeClass} ${
+        ready ? "animate-healthy-pop" : ""
+      }`}
+    >
+      <span className="block h-[1em] cursor-pointer overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-120">
+  <span
+    className="block transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+    style={{ transform: `translateY(-${index}em)` }}
+  >
+    {HEALTHY_WORDS.map((word) => (
+      <span key={word} className="block h-[1em] leading-none">
+        {word}
+      </span>
+    ))}
+  </span>
+</span>
+    </span>
+  )
+}
+
+function WobbleText({ text }) {
+  return text.split("").map((char, i) => (
+    <span
+      key={i}
+      className="letter-wobble inline-block cursor-pointer transition-colors duration-200"
+      style={{ "--hover-color": WOBBLE_COLORS[i % WOBBLE_COLORS.length] }}
+    >
+      {char === " " ? "\u00A0" : char}
+    </span>
+  ))
+}
 function MobileHero({ ready }) {
   const [scrollY, setScrollY] = useState(0)
   const [entered, setEntered] = useState(false)
@@ -69,7 +124,7 @@ function MobileHero({ ready }) {
           )
         })}
 
-        {/* Heading — "healthy" is inline in the gap, sized in em so it tracks
+        {/* Heading — the slot is inline in the gap, sized in em so it tracks
             the heading and stays centred between SAY and COOKIES. The spacer
             opens on load, then the word drops into the space it made. */}
         <h1 className="absolute left-[49.9%] top-[37.3%] z-10 w-[84.3%] -translate-x-1/2 text-center text-[clamp(28px,9vw,36px)] font-normal leading-[1.389] tracking-tight text-primary-default">
@@ -81,13 +136,7 @@ function MobileHero({ ready }) {
               ready ? "animate-gap-open" : "w-0"
             }`}
           >
-            <span
-              className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading text-[0.28em] leading-none tracking-wide text-primary-fill opacity-0 ${
-                ready ? "animate-healthy-pop" : ""
-              }`}
-            >
-              healthy
-            </span>
+            <HealthySlot ready={ready} sizeClass="text-[0.28em]" />
           </span>
           COOKIES?
         </h1>
@@ -98,7 +147,7 @@ function MobileHero({ ready }) {
         </p>
 <a
         
-          href="#shop"
+          href="#shop" data-concept
           className="group/pill absolute left-[31.3%] top-[56.4%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
         >
           <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
@@ -164,25 +213,20 @@ function DesktopHero({ ready }) {
             style={{ animationDelay: "260ms" }}
           />
 
-          {/* 89 / 1040 = 8.56cqw */}
-          <h1 className="absolute left-[48.7%] top-[14.5%] z-0 -translate-x-1/2 whitespace-nowrap text-center text-[8.56cqw] font-normal leading-[1.337] tracking-tight text-primary-default">
-            DID SOMEONE
+          {/* 89 / 1040 = 8.56cqw. Letters wobble and take a palette colour on
+              hover — safe here because the line is whitespace-nowrap. */}
+          <h1 className="absolute left-[48.7%] top-[14.5%] z-20 -translate-x-1/2 whitespace-nowrap text-center text-[8.56cqw] font-normal leading-[1.337] tracking-tight text-primary-default">
+            <WobbleText text="DID SOMEONE" />
             <br />
-            SAY
+            <WobbleText text="SAY" />
             <span
               className={`relative inline-block align-middle ${
                 ready ? "animate-gap-open" : "w-0"
               }`}
             >
-              <span
-                className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading text-[0.225em] leading-none tracking-wide text-primary-fill opacity-0 ${
-                  ready ? "animate-healthy-pop" : ""
-                }`}
-              >
-                healthy
-              </span>
+              <HealthySlot ready={ready} sizeClass="text-[0.225em]" />
             </span>
-            COOKIES?
+            <WobbleText text="COOKIES?" />
           </h1>
 
           {/* 16 / 1040 = 1.54cqw, floored so it stays legible */}
@@ -194,7 +238,7 @@ function DesktopHero({ ready }) {
 
           {/* 20 / 1040 = 1.92cqw */}
           <a
-            href="#shop"
+            href="#shop" data-concept
             className="group/pill absolute left-[75.1%] top-[78.2%] z-30 inline-flex h-[14.7%] items-center gap-[1.54cqw] overflow-hidden whitespace-nowrap rounded-button bg-primary-default pl-[1.92%] pr-[0.77%] font-heading text-[max(13px,1.92cqw)] transition-transform duration-100 active:scale-[0.97]"
           >
             <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">

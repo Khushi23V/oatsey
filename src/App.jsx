@@ -13,6 +13,7 @@ import Reviews from "./components/sections/Reviews"
 import Faq from "./components/sections/Faq"
 import Newsletter from "./components/sections/Newsletter"
 import Footer from "./components/Footer"
+import ConceptModal from "./components/ConceptModal"
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -24,11 +25,7 @@ function App() {
     setLoading(false)
   }
 
-  // Lock the page while the loader is up. Both html and body are needed:
-  // index.css sets html { overflow-x: clip }, and body's overflow only
-  // propagates to the viewport when html's overflow is `visible` — so
-  // locking body alone leaves html scrolling. Resetting to "" afterwards
-  // restores the stylesheet value.
+
   useEffect(() => {
     const html = document.documentElement
 
@@ -72,6 +69,21 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const [conceptOpen, setConceptOpen] = useState(false)
+
+// Any element carrying data-concept opens the modal. Delegated so adding a
+// new dead button is a one-attribute change, not a prop chain.
+useEffect(() => {
+  const onClick = (e) => {
+    if (e.target.closest("[data-concept]")) {
+      e.preventDefault()
+      setConceptOpen(true)
+    }
+  }
+  document.addEventListener("click", onClick)
+  return () => document.removeEventListener("click", onClick)
+}, [])
+
   return (
     <>
       {loading && <Loader onDone={handleLoaderDone} />}
@@ -83,7 +95,10 @@ function App() {
           while this whole wrapper keeps scrolling up and over it — giving
           the "footer pops up from behind" reveal effect. */}
       <div className="relative z-10 min-h-screen bg-white text-primary-default font-body">
-        <Header hidden={footerVisible || (isMobile && !scrolled)} />
+        <Header
+  hidden={footerVisible || (isMobile && !scrolled)}
+  scrolled={scrolled}
+/>
         <Hero ready={!loading} />
         <Marquees />
         <Story />
@@ -96,7 +111,7 @@ function App() {
         <Faq />
         <Newsletter />
       </div>
-
+<ConceptModal open={conceptOpen} onClose={() => setConceptOpen(false)} />
       <Footer />
     </>
   )

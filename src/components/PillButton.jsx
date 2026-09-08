@@ -18,15 +18,8 @@ function PillButton({
       } ${className}`}
       {...props}
     >
-      {/* Fill grows from the circle's position outward to cover the pill */}
       <span
-        className={`absolute right-2 top-1/2 h-9 w-9 -translate-y-1/2 scale-100 rounded-full transition-transform duration-500 ease-out group-hover/pill:scale-[12] ${
-          inverted ? "bg-primary-default" : "bg-white"
-        }`}
-      />
-
-      <span
-        className={`relative font-heading text-[14px] uppercase transition-colors duration-300 sm:text-[16px] ${
+        className={`relative z-10 font-heading text-[14px] uppercase transition-colors duration-300 sm:text-[16px] ${
           inverted
             ? "text-primary-default group-hover/pill:text-white"
             : "text-white group-hover/pill:text-primary-default"
@@ -35,12 +28,25 @@ function PillButton({
         {children}
       </span>
 
+      {/* The sweep lives inside the circle at inset-0, so it can never
+          detach from the arrow however wide the pill gets. */}
       <span
-        className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-300 group-hover/pill:translate-x-1 ${
-          inverted ? "text-white" : "text-primary-default"
+        className={`relative flex h-9 w-9 items-center justify-center transition-transform duration-300 group-hover/pill:translate-x-1 ${
+          inverted
+            ? "text-white group-hover/pill:text-primary-default"
+            : "text-primary-default group-hover/pill:text-white"
         }`}
       >
-         <img src="/arrow2.svg" alt=""  className="h-[50%] rotate-[180deg] w-auto" />
+        <span
+          className={`absolute inset-0 rounded-full transition-transform duration-500 ease-out group-hover/pill:scale-[20] ${
+            inverted ? "bg-primary-default" : "bg-white"
+          }`}
+        />
+     <img
+  src={inverted ? "/arrow2.svg" : "/arrow.svg"}
+  alt=""
+  className={`relative h-[50%] w-auto ${inverted ? "rotate-180" : ""}`}
+/>
       </span>
     </Tag>
   )

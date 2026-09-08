@@ -99,7 +99,7 @@ const steps = [
     numberColor: "text-secondary-3-text",
     shapeRotate: "rotate-[13.29deg]",
     textRotate: "rotate-[6.79deg]",
-    photo: "/img1.png"
+    photo: "/img1.webp"
   },
   {
     number: "02",
@@ -110,7 +110,7 @@ const steps = [
     numberColor: "text-secondary-1-text",
     shapeRotate: "rotate-[0.08deg]",
     textRotate: "rotate-[-6.42deg]",
-    photo: "/img2.png"
+    photo: "/img2.webp"
   },
   {
     number: "03",
@@ -121,7 +121,7 @@ const steps = [
     numberColor: "text-secondary-2-text",
     shapeRotate: "rotate-[13.0deg]",
     textRotate: "rotate-[6.5deg]",
-    photo: "/img3.png"
+    photo: "/img3.webp"
   },
 ]
 
@@ -179,33 +179,20 @@ function FlipCard({ step, className = "" }) {
   )
 }
 
-export function TypedHeading({ lines, revealed, className = "", nowrap = false }) {
-  let offset = 0
-
+export function TypedHeading({ lines, revealed, className = "" }) {
   return (
     <h2 className={className}>
-      {lines.map((line, li) => {
-        const start = offset
-        offset += line.length + 3
-
-        return (
-          <span key={line} className={`block ${nowrap ? "whitespace-nowrap" : ""}`}>
-            {line.split("").map((char, ci) => (
-              <span
-                key={ci}
-                className={`inline-block transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.8,0.64,1)] ${
-                  revealed
-                    ? "translate-y-0 scale-100 opacity-100"
-                    : "translate-y-[0.2em] scale-50 opacity-0"
-                }`}
-                style={{ transitionDelay: `${(start + ci) * 40}ms` }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </span>
-            ))}
-          </span>
-        )
-      })}
+      {lines.map((line, li) => (
+        <span
+          key={line}
+          className={`block transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+            revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+          }`}
+          style={{ transitionDelay: `${li * 140}ms` }}
+        >
+          {line}
+        </span>
+      ))}
     </h2>
   )
 }
@@ -276,7 +263,7 @@ function ProcessSteps() {
     {steps.map((step, index) => (
  <div
   key={step.number}
-  className={`transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+ className={`transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
     index === 0 ? "z-10" : index === 1 ? "z-30" : "z-20"
   } ${index === 0 ? "" : "-ml-16"} hover:z-40`}
   style={{
@@ -284,7 +271,7 @@ function ProcessSteps() {
     transform: revealed
       ? undefined
       : `translateX(${index === 0 ? "60%" : index === 2 ? "-60%" : "0"}) scale(0.85)`,
-    transitionDelay: revealed ? `${900 + index * 220}ms` : "0ms",
+    transitionDelay: revealed ? `${500 + index * 140}ms` : "0ms",
   }}
 >
   {/* Lift and spread get their own wrapper so they run at hover speed,

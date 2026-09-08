@@ -53,7 +53,7 @@ function Flavors() {
 useEffect(() => {
   if (!revealed) return
   // Longest total: last letter's delay plus its own duration.
-  const id = setTimeout(() => setTyped(true), 4200)
+  const id = setTimeout(() => setTyped(true), 2200)
   return () => clearTimeout(id)
 }, [revealed])
 
@@ -87,7 +87,7 @@ useEffect(() => {
         {flavors.map((flavor, index) => {
           const iconOnLeft = index % 2 === 0
           const startAt = letterOffset
-          letterOffset += flavor.name.length + 4 // small pause between names
+          letterOffset += flavor.name.length + 2// small pause between names
 
           return (
             <div
@@ -115,7 +115,7 @@ useEffect(() => {
       ? "translate-y-0 scale-100 opacity-100"
       : "translate-y-[0.25em] scale-50 opacity-0"
   }`}
-style={{ transitionDelay: typed ? "0ms" : `${(startAt + ci) * 35}ms` }}
+style={{ transitionDelay: typed ? "0ms" : `${(startAt + ci) * 18}ms` }}
 >
                     {char === " " ? "\u00A0" : char}
                   </span>

@@ -12,7 +12,7 @@ const supportLinks = [
 function SocialIcon({ children, label }) {
   return (
     <a
-      href="#"
+      href="#"  data-concept
       aria-label={label}
       className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10"
     >
@@ -31,7 +31,7 @@ function LinkColumn({ title, links }) {
         {links.map((link) => (
           <li key={link}>
             <a
-              href="#"
+              href="#"  data-concept
               className="font-body text-[14px] text-white/60 transition-colors hover:text-white sm:text-[16px] sm:text-white/80"
             >
               {link}

@@ -163,7 +163,7 @@ function Faq() {
 
             <a
               
-  href="#faq"
+  href="#faq"  data-concept
   className="group/pill mt-8 flex w-fit items-center gap-4 overflow-hidden rounded-button bg-primary-default py-2 pl-6 pr-2 font-heading transition-transform duration-100 active:scale-[0.97]"
 >
   <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">

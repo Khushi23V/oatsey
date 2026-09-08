@@ -30,22 +30,15 @@ function Marquees() {
     <section className="relative h-64 overflow-hidden bg-white sm:h-72 md:h-80">
       {/* Color marquee — svg, sits behind the benefits strip. Wider band on
           narrow screens so the rotation doesn't leave gaps at the corners. */}
-      <div className="absolute left-1/2 top-1/2 z-0 w-[160%] overflow-hidden [transform:translate3d(-50%,-50%,0)_rotate(8.46deg)] [backface-visibility:hidden] sm:w-[120%]">
-        <div className="flex w-max animate-marquee-right items-center">
-          {[...Array(2)].map((_, setIndex) => (
-            <div key={setIndex} className="flex items-center">
-              {[...Array(10)].map((_, tileIndex) => (
-                <img
-                  key={tileIndex}
-                  src="/color marquee.svg"
-                  alt=""
-                  className="h-12 w-auto shrink-0 sm:h-16 lg:h-20"
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
+     <div className="absolute left-1/2 top-1/2 z-0 w-[160%] overflow-hidden [transform:translate3d(-50%,-50%,0)_rotate(8.46deg)] sm:w-[120%]">
+  <div
+    className="h-12 w-[200%] animate-marquee-right bg-repeat-x sm:h-16 lg:h-20"
+    style={{
+      backgroundImage: 'url("/color marquee.svg")',
+      backgroundSize: "auto 100%",
+    }}
+  />
+</div>
 
       {/* Benefits marquee — brown strip, sits on top */}
       <div className="absolute left-1/2 top-1/2 z-10 w-[160%] -translate-x-1/2 -translate-y-1/2 rotate-[-5.65deg] overflow-hidden bg-primary-default sm:w-[120%]">

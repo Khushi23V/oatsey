@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import { TypedHeading } from "./ProcessSteps"
 
+
+const scrollByCard = (direction) => {
+  const el = scrollRef.current
+  if (!el) return
+  const card = el.children[0]
+  const gap = 40
+  const distance = card ? card.offsetWidth + gap : 400
+  const max = el.scrollWidth - el.clientWidth
+  const next = Math.min(Math.max(el.scrollLeft + direction * distance, 0), max)
+  el.scrollTo({ left: next, behavior: "smooth" })
+}
+
 const reviews = [
   {
     text: "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
@@ -185,10 +197,10 @@ function Reviews() {
       />
 
       {/* Full-bleed carousel — no section padding, so cards run edge to edge */}
-      <div
-        ref={scrollRef}
-        className="mt-0 flex gap-10 overflow-x-auto py-4 pl-6 sm:gap-20 md:pl-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+     <div
+  ref={scrollRef}
+  className="mt-0 flex gap-10 overflow-x-auto py-4 pl-6 pr-6 sm:gap-20 md:pl-24 md:pr-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+>
         {reviews.map((review, i) => (
           <ReviewCard key={i} review={review} />
         ))}

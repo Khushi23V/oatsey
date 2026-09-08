@@ -122,8 +122,8 @@ const products = [
   { name: "Strawberry", name2: "Cheesecake", price: "₹299.00", box: "/box-strawberry.webp", cookie: "/cookie-1.webp", bg: "bg-secondary-1-fill" },
   { name: "Blackcurrant", name2: "Bliss", price: "₹299.00", box: "/box-blackcurrant.webp", cookie: "/cookie-3.webp", bg: "bg-secondary-2-fill" },
   { name: "Mango", name2: "Marvel", price: "₹299.00", box: "/box-mango.webp", cookie: "/cookie-2.webp", bg: "bg-secondary-3-fill" },
-  { name: "Tasty", name2: "Tiramisu", price: "₹299.00", box: "/box-tiramisu.png", cookie: "/cookie-4.webp", bg: "bg-primary-fill" },
-  { name: "OG Chocolate", name2: "Chip", price: "₹249.00", box: "/box-chocochip.png", cookie: "/cookie.webp", bg: "bg-primary-bg" },
+  { name: "Tasty", name2: "Tiramisu", price: "₹299.00", box: "/box-tiramisu.webp", cookie: "/cookie-4.webp", bg: "bg-primary-fill" },
+  { name: "OG Chocolate", name2: "Chip", price: "₹249.00", box: "/box-chocochip.webp", cookie: "/cookie.webp", bg: "bg-primary-bg" },
 ]
 
 function ProductCard({ product, revealed, index }) {
@@ -158,15 +158,15 @@ function ProductCard({ product, revealed, index }) {
         />
       </div>
 
-      <div className="mt-6 flex max-h-[110px] flex-col gap-1.5 overflow-hidden transition-all duration-300 sm:mt-0 sm:max-h-0 sm:group-hover:mt-6 sm:group-hover:max-h-[110px]">
+      <div className="relative z-20 mt-6 flex max-h-[110px] flex-col gap-1.5 overflow-hidden transition-all duration-300 sm:mt-0 sm:max-h-0 sm:group-hover:mt-6 sm:group-hover:max-h-[110px]">
         <AddToCartBar price={product.price} />
 
         <a
-          href="#shop"
-          onClick={(e) => e.stopPropagation()}
+          href="#shop"  data-concept
+   
           className="flex h-[49px] shrink-0 items-center justify-between rounded-[10px] border-2 border-primary-bg px-5 shadow-md transition-transform duration-100 active:scale-[0.98]"
         >
-          <span className="font-heading text-[16px] uppercase leading-none text-black">
+          <span className="font-heading   text-[16px] uppercase leading-none text-black">
             View Product
           </span>
           <img src="/arrow3.svg" alt="" className="relative h-[50%] w-auto" />
