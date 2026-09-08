@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import PillButton from "./PillButton"
 
 // Scattered along the panel's floor, each with its own settle angle so the
 // pile looks dropped rather than arranged.
@@ -34,64 +33,65 @@ function MobileMenu({ open, onClose, links }) {
   return (
     <div className="animate-menu-in fixed inset-0 z-[100] flex flex-col overflow-hidden bg-primary-bg md:hidden">
       <div className="flex shrink-0 items-center justify-between px-6 py-5">
-  <button
-    type="button"
-    onClick={onClose}
-    aria-label="Close menu"
-    className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-default text-white transition-transform duration-200 active:scale-90"
-  >
-    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" className="w-[16px] rotate-45" aria-hidden="true">
-      <path d="M0.712746 15.7961C-0.931544 16.9611 1.28756 17.9143 6.64302 18.4157C21.2094 19.6265 32.4843 19.4014 33.3636 17.7635C34.0115 16.5817 32.4435 15.4027 29.266 14.6656C27.3653 14.2583 21.4617 14.1452 15.0005 14.3622C2.45998 14.7937 2.01329 14.8666 0.712746 15.7961Z" fill="currentColor" />
-      <path d="M17.716 0.716599C16.5316 -0.913725 15.6048 1.31655 15.1671 6.6776C14.1296 21.2573 14.4887 32.5288 16.137 33.3885C17.3264 34.0224 18.4866 32.4404 19.1859 29.2544C19.5706 27.3489 19.6135 21.4445 19.3197 14.9863C18.7391 2.4518 18.6609 2.006 17.716 0.716599Z" fill="currentColor" />
-    </svg>
-  </button>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-default text-white transition-transform duration-200 active:scale-90"
+        >
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" className="w-[16px] rotate-45" aria-hidden="true">
+            <path d="M0.712746 15.7961C-0.931544 16.9611 1.28756 17.9143 6.64302 18.4157C21.2094 19.6265 32.4843 19.4014 33.3636 17.7635C34.0115 16.5817 32.4435 15.4027 29.266 14.6656C27.3653 14.2583 21.4617 14.1452 15.0005 14.3622C2.45998 14.7937 2.01329 14.8666 0.712746 15.7961Z" fill="currentColor" />
+            <path d="M17.716 0.716599C16.5316 -0.913725 15.6048 1.31655 15.1671 6.6776C14.1296 21.2573 14.4887 32.5288 16.137 33.3885C17.3264 34.0224 18.4866 32.4404 19.1859 29.2544C19.5706 27.3489 19.6135 21.4445 19.3197 14.9863C18.7391 2.4518 18.6609 2.006 17.716 0.716599Z" fill="currentColor" />
+          </svg>
+        </button>
 
-  <img src="/oatsey-logo.svg" alt="Oatsey" className="h-15 w-auto" />
-</div>
+        <img src="/oatsey-logo.svg" alt="Oatsey" className="h-15 w-auto" />
+      </div>
 
-      <nav className="relative z-10 flex flex-col px-6 pt-2">
-        {links.map((link, i) => (
+      {/* pb reserves the cookie pile's height so Sign Up clears it */}
+      <nav className="relative z-10 flex flex-col px-6 pb-64 pt-2">
+        {links.map((link) => (
           <a
             key={link.label}
-  href={link.href}
-  data-concept
-  onClick={onClose}
-  className="group/link relative flex items-center border-t border-primary-fill/40 py-5 last:border-b"
->
-            <span className="font-heading text-[36px] uppercase leading-none text-primary-default transition-transform duration-200 group-active/link:translate-x-2">
+            href={link.href}
+            data-concept
+            onClick={onClose}
+            className="group/link relative flex items-center border-t border-primary-fill/40 py-4 last:border-b"
+          >
+            <span className="font-heading text-[28px] uppercase leading-none text-primary-default transition-transform duration-200 group-active/link:translate-x-2">
               {link.label}
             </span>
           </a>
         ))}
-<a
-       
-  href="#signup"
-  data-concept
-  onClick={onClose}
-  className="group/pill relative mt-8 flex w-fit items-center gap-4 overflow-hidden rounded-button bg-primary-default py-3 pl-7 pr-3 transition-transform duration-100 active:scale-[0.97]"
->
-  <span className="relative z-10 font-heading text-[36px] uppercase leading-none text-white transition-colors duration-300 group-hover/pill:text-primary-default">
-    Sign Up
-  </span>
 
-  <span className="relative flex h-12 w-12 items-center justify-center">
-    <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[20]" />
-    <img src="/arrow.svg" alt="" className="relative h-[45%] w-auto" />
-  </span>
-</a>
+        <a
+          href="#signup"
+          data-concept
+          onClick={onClose}
+          className="group/pill relative mt-7 flex w-fit items-center gap-3 overflow-hidden rounded-button bg-primary-default py-2.5 pl-6 pr-2.5 transition-transform duration-100 active:scale-[0.97]"
+        >
+          <span className="relative z-10 font-heading text-[28px] uppercase leading-none text-white transition-colors duration-300 group-hover/pill:text-primary-default">
+            Sign Up
+          </span>
+
+          <span className="relative flex h-10 w-10 items-center justify-center">
+            <span className="absolute inset-0 rounded-full bg-white transition-transform duration-500 ease-out group-hover/pill:scale-[20]" />
+            <img src="/arrow.svg" alt="" className="relative h-[45%] w-auto" />
+          </span>
+        </a>
       </nav>
 
-      {/* Cookies drop after the links have landed and pile along the floor */}
+      {/* Cookies drop after the panel opens and pile along the floor */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-72">
         {FALLING.map((c) => (
           <img
             key={c.src}
             src={c.src}
             alt=""
-            className={`animate-cookie-fall absolute bottom-4 ${c.size}`}
+            className={`animate-cookie-fall absolute bottom-0 ${c.size}`}
             style={{
               left: c.left,
-              animationDelay: `${500 + c.delay}ms`,
+              animationDelay: `${350 + c.delay}ms`,
               "--settle-rot": c.rot,
             }}
           />

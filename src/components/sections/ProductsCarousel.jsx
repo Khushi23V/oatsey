@@ -209,7 +209,7 @@ function ProductsCarousel() {
   }
 
   return (
-    <section ref={sectionRef} className="px-6 py-16 md:px-10 md:py-24">
+    <section ref={sectionRef} className="px-6 py-12 md:px-10 md:py-10">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>

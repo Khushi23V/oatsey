@@ -4,7 +4,7 @@ import Header from "./components/Header"
 import Hero from "./components/sections/Hero"
 import Marquees from "./components/sections/Marquees"
 import Story from "./components/sections/Story"
-import GalleryScatter from "./components/sections/GalleryScatter"
+
 import Flavors from "./components/sections/Flavors"
 import ProductsCarousel from "./components/sections/ProductsCarousel"
 import TrustBadges from "./components/sections/TrustBadges"
@@ -14,6 +14,7 @@ import Faq from "./components/sections/Faq"
 import Newsletter from "./components/sections/Newsletter"
 import Footer from "./components/Footer"
 import ConceptModal from "./components/ConceptModal"
+import Ingredients from "./components/sections/Ingredients"
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -102,8 +103,7 @@ useEffect(() => {
         <Hero ready={!loading} />
         <Marquees />
         <Story />
-        <GalleryScatter />
-        <Flavors />
+        <Ingredients />
         <ProductsCarousel />
         <TrustBadges />
         <ProcessSteps />

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+
 const flavors = [
   {
     name: "OG Chocolate Chip",
@@ -28,7 +29,7 @@ const flavors = [
   },
 ]
 
-function ColorBar() {
+export function ColorBar() {
   return (
     <div className="h-8 w-full overflow-hidden sm:h-10 lg:h-12">
       <div className="flex w-max items-center">
