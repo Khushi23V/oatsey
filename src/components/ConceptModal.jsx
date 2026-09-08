@@ -116,7 +116,7 @@ style={{
   </div>
 
   <h2 className="mt-5 font-heading text-[24px] uppercase leading-[1.15] text-primary-default sm:text-[28px]">
-    This one's just
+    This is just
     <br />
     a concept
   </h2>
@@ -129,7 +129,7 @@ style={{
 
   <div className="mt-5 flex justify-center">
     <PillButton href="https://www.behance.net/khushiverma">
-      See The Case Study
+      Read The Case Study
     </PillButton>
   </div>
 </div>

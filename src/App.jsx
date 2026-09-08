@@ -96,10 +96,7 @@ useEffect(() => {
           while this whole wrapper keeps scrolling up and over it — giving
           the "footer pops up from behind" reveal effect. */}
       <div className="relative z-10 min-h-screen bg-white text-primary-default font-body">
-        <Header
-  hidden={footerVisible || (isMobile && !scrolled)}
-  scrolled={scrolled}
-/>
+     <Header hidden={footerVisible} scrolled={scrolled} />
         <Hero ready={!loading} />
         <Marquees />
         <Story />

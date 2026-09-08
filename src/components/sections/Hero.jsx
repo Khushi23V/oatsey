@@ -2,13 +2,12 @@ import { useEffect, useState } from "react"
 import PillButton from "../PillButton"
 
 const mobileCookies = [
-  // top right
-  { src: "/cookie-home.svg", left: "42.3%", top: "-1%", width: "60.7%" },
-  // left
-  { src: "/cookie-home2.svg", left: "-1.6%", top: "9.5%", width: "35.1%" },
-  // bottom — oversized so its widest band clips both side edges inside the
-  // viewport; the rest continues below the fold.
-  { src: "/cookie-home3.svg", left: "50%", top: "58%", width: "165%", centered: true },
+  // left, entering below the heading
+  { src: "/cookie-home2.svg", left: "-17%", top: "44%", width: "48%", spin: 0.12 },
+  // bottom left, partly off-screen
+  { src: "/cookie-home.svg", left: "-30%", top: "72%", width: "74%", spin: -0.09  },
+  // bottom anchor — oversized so it clips both side edges
+  { src: "/cookie-home3.svg", left: "85%", top: "43%", width: "105%", centered: true, spin: 0.06 },
 ]
 
 const HEALTHY_WORDS = ["healthy", "guilt-free", "tasty"]
@@ -91,43 +90,45 @@ function MobileHero({ ready }) {
         {/* Cookies stagger in once the loader hands over. opacity-0 holds them
             hidden until then; the centred one needs its own keyframe so the
             translate isn't lost to the scale transform. */}
-        {mobileCookies.map((c, i) => {
-          const spinning = c.centered && entered
+       {mobileCookies.map((c, i) => {
+  const spinning = entered
 
-          return (
-            <img
-              key={c.src}
-              src={c.src}
-              alt=""
-              className={`absolute max-w-none ${spinning ? "" : "opacity-0"} ${
-                spinning
-                  ? ""
-                  : ready
-                    ? c.centered
-                      ? "animate-cookie-pop-centered"
-                      : "animate-cookie-pop"
-                    : c.centered
-                      ? "-translate-x-1/2"
-                      : ""
-              }`}
-              style={{
-                left: c.left,
-                top: c.top,
-                width: c.width,
-                animationDelay: `${i * 130}ms`,
-                ...(spinning && {
-                  opacity: 1,
-                  transform: `translateX(-50%) rotate(${scrollY * 0.08}deg)`,
-                }),
-              }}
-            />
-          )
-        })}
+  return (
+    <img
+      key={c.src}
+      src={c.src}
+      alt=""
+      className={`absolute max-w-none ${spinning ? "" : "opacity-0"} ${
+        spinning
+          ? ""
+          : ready
+            ? c.centered
+              ? "animate-cookie-pop-centered"
+              : "animate-cookie-pop"
+            : c.centered
+              ? "-translate-x-1/2"
+              : ""
+      }`}
+      style={{
+        left: c.left,
+        top: c.top,
+        width: c.width,
+        animationDelay: `${i * 130}ms`,
+        ...(spinning && {
+          opacity: 1,
+          transform: `${c.centered ? "translateX(-50%) " : ""}rotate(${
+            scrollY * c.spin
+          }deg)`,
+        }),
+      }}
+    />
+  )
+})}
 
         {/* Heading — the slot is inline in the gap, sized in em so it tracks
             the heading and stays centred between SAY and COOKIES. The spacer
             opens on load, then the word drops into the space it made. */}
-        <h1 className="absolute left-[49.9%] top-[37.3%] z-10 w-[84.3%] -translate-x-1/2 text-center text-[clamp(28px,9vw,36px)] font-normal leading-[1.389] tracking-tight text-primary-default">
+        <h1 className="absolute left-[49.9%] top-[18%] z-10 w-[84.3%] -translate-x-1/2 text-center text-[clamp(28px,9vw,36px)] font-normal leading-[1.389] tracking-tight text-primary-default">
           DID SOMEONE
           <br />
           SAY
@@ -141,14 +142,11 @@ function MobileHero({ ready }) {
           COOKIES?
         </h1>
 
-        <p className="absolute left-[48.6%] top-[51.1%] z-10 w-[71.9%] -translate-x-1/2 text-center font-body text-[12px] font-normal leading-[16px] text-neutral-black">
+       <p className="absolute left-[48.6%] top-[34%] z-10 w-[71.9%] -translate-x-1/2 text-center font-body text-[12px] font-normal leading-[16px] text-neutral-black">
           Cookies made from oats, not shortcuts. No refined flour, no refined
           sugar, just small batches.
         </p>
-<a
-        
-          href="#shop" data-concept
-          className="group/pill absolute left-[31.3%] top-[56.4%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
+<a href="#shop" data-concept className="group/pill absolute left-[31.3%] top-[41%] z-10 inline-flex h-[38px] items-center gap-3 overflow-hidden rounded-button bg-primary-default pl-[18px] pr-[7px] font-heading text-[12px] transition-transform duration-100 active:scale-[0.97]"
         >
           <span className="relative z-10 text-white transition-colors duration-300 group-hover/pill:text-primary-default">
             SHOP NOW
@@ -162,7 +160,7 @@ function MobileHero({ ready }) {
       </div>
 
       {/* Room for the lower part of the bottom cookie */}
-      <div className="h-[80vw]" />
+      <div className="h-[30vw]" />
     </div>
   )
 }
