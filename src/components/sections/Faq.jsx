@@ -1,43 +1,44 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PillButton from "../PillButton"
+import { TypedHeading } from "./ProcessSteps"
 
 const faqs = [
   {
     question: "How long do the cookies stay fresh?",
     answer:
-      "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
+      "Two weeks in the sealed pouch, about a week once it's open. No preservatives means they don't sit around forever, which is rather the point.",
     circleBg: "bg-secondary-3-fill",
     hoverBorder: "hover:border-secondary-3-fill",
     openBg: "bg-secondary-3-bg",
   },
   {
-    question: "How long do the cookies stay fresh?",
+    question: "Are these actually sugar-free?",
     answer:
-      "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
+      "No refined sugar, not sugar-free. We sweeten with dates and jaggery, so there's still natural sugar in there — just nothing processed.",
     circleBg: "bg-secondary-1-fill",
     hoverBorder: "hover:border-secondary-1-fill",
     openBg: "bg-secondary-1-bg",
   },
   {
-    question: "How long do the cookies stay fresh?",
+    question: "Do you ship across India?",
     answer:
-      "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
-    circleBg: "bg-secondary-2-fill",
+      "We currently only ship our tasty cookies to Delhi and Mumbai, but we're expanding soon!",
+      circleBg: "bg-secondary-2-fill",
     hoverBorder: "hover:border-secondary-2-fill",
     openBg: "bg-secondary-2-bg",
   },
   {
-    question: "How long do the cookies stay fresh?",
+    question: "What's actually in them?",
     answer:
-      "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
+      "Rolled oats, dates, jaggery, cold-pressed oils, and whatever the flavour calls for. The full list is printed on every box, no fine print.",
     circleBg: "bg-primary-fill",
     hoverBorder: "hover:border-primary-fill",
     openBg: "bg-primary-bg",
   },
   {
-    question: "How long do the cookies stay fresh?",
+    question: "Can I order a mixed box?",
     answer:
-      "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
+      "You can. Pick any combination of the five flavours at checkout, or let us choose if you'd rather be surprised.",
     circleBg: "bg-primary-default",
     hoverBorder: "hover:border-primary-default",
     openBg: "bg-primary-fill",
@@ -56,54 +57,109 @@ function FaqItem({ faq, isOpen, onToggle }) {
         <p className="font-body text-[16px] font-semibold text-black">
           {faq.question}
         </p>
-        <span
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[18px] leading-none text-white ${faq.circleBg}`}
-        >
-          {isOpen ? "−" : "+"}
-        </span>
+        {/* Plus rotates 45° into a cross rather than swapping glyphs */}
+<span
+  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-transform duration-300 ${
+    faq.circleBg
+  } ${isOpen ? "rotate-[135deg]" : "rotate-0"}`}
+>
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    className="h-[45%] w-[45%]"
+    aria-hidden="true"
+  >
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+</span>
       </div>
 
-      {isOpen && (
-        <p className="mt-4 font-body text-[16px] font-normal leading-[22px] text-primary-default">
-          {faq.answer}
-        </p>
-      )}
+      {/* grid-rows trick — animates from 0fr to 1fr, which transitions
+          smoothly without needing a fixed height */}
+      <div
+        className={`grid transition-all duration-300 ease-out ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="pt-4 font-body text-[16px] font-normal leading-[22px] text-primary-default">
+            {faq.answer}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
 
 function Faq() {
   const [openIndex, setOpenIndex] = useState(null)
+  const ref = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.25 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section className="px-6 py-16 md:px-10 md:py-24">
+    <section ref={ref} className="px-6 py-16 md:px-10 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <h2 className="font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px]">
-          Frequently Asked
-          <br />
-          Questions
-        </h2>
+<TypedHeading
+ lines={["Frequently", "Asked", "Questions"]}
+  revealed={revealed}
+  nowrap
+  className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px] md:text-left"
+/>
 
         <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 md:items-start">
-          <img
-            src="/faq-image.webp"
-            alt=""
-            className="w-full rounded-[20px] object-cover"
-          />
+<img
+  src="/faq-image.webp"
+  alt=""
+  className="hidden w-full rounded-[20px] object-cover transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:block"
+  style={{
+    opacity: revealed ? 1 : 0,
+    transform: revealed ? "scale(1)" : "scale(0.94)",
+    transitionDelay: revealed ? "500ms" : "0ms",
+  }}
+/>
 
           <div>
             <div className="flex flex-col gap-4">
               {faqs.map((faq, index) => (
-                <FaqItem
+                <div
                   key={index}
-                  faq={faq}
-                  isOpen={openIndex === index}
-                  onToggle={() =>
-                    setOpenIndex(openIndex === index ? null : index)
-                  }
-                />
+                  className="transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{
+                    opacity: revealed ? 1 : 0,
+                    transform: revealed ? "translateX(0)" : "translateX(30px)",
+                    transitionDelay: revealed ? `${600 + index * 100}ms` : "0ms",
+                  }}
+                >
+                  <FaqItem
+                    faq={faq}
+                    isOpen={openIndex === index}
+                    onToggle={() =>
+                      setOpenIndex(openIndex === index ? null : index)
+                    }
+                  />
+                </div>
               ))}
             </div>
+
 
             <a
               

@@ -1,6 +1,7 @@
-
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PillButton from "../PillButton"
+import { TypedHeading } from "./ProcessSteps"
+
 
 const upcomingFlavors = [
   "Matcha White Chip",
@@ -86,16 +87,46 @@ function EnvelopeIllustration({ open, className }) {
 function Newsletter() {
   const [focused, setFocused] = useState(false)
   const [flavorIndex, setFlavorIndex] = useState(0)
+  const [email, setEmail] = useState("")
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState(false)
+  const sectionRef = useRef(null)
+  const [revealed, setRevealed] = useState(false)
 
-useEffect(() => {
-  const id = setInterval(() => {
-    setFlavorIndex((i) => (i + 1) % upcomingFlavors.length)
-  }, 3000)
-  return () => clearInterval(id)
-}, [])
+  const handleSubmit = () => {
+    if (!email.trim() || !email.includes("@")) {
+      setError(true)
+      return
+    }
+    setError(false)
+    setSubmitted(true)
+  }
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.25 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setFlavorIndex((i) => (i + 1) % upcomingFlavors.length)
+    }, 3000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
-    <section className="px-6 py-16 md:px-10 md:py-24">
+    <section ref={sectionRef} className="px-6 py-16 md:px-10 md:py-24">
       <div className="group relative mx-auto max-w-6xl overflow-hidden rounded-[20px] md:rounded-[40px]">
         <img
           src="/news.webp"
@@ -105,70 +136,96 @@ useEffect(() => {
         <div className="absolute inset-0 bg-primary-default/45" />
 
         <div className="relative grid grid-cols-1 items-center gap-8 px-6 py-12 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-4 md:px-12 md:py-16">
-<div className="order-first flex justify-center sm:order-none">
-  <EnvelopeIllustration
-    open={focused}
-    className="h-auto w-[160px] max-w-none sm:w-[200px] md:w-[280px] lg:w-[340px]"
-  />
-</div>
+          <div className="order-first flex justify-center sm:order-none">
+            <EnvelopeIllustration
+              open={focused}
+              className="h-auto w-[160px] max-w-none sm:w-[200px] md:w-[280px] lg:w-[340px]"
+            />
+          </div>
 
           <div className="max-w-xl">
-            <h2 className="font-heading text-[clamp(28px,7vw,64px)] uppercase leading-[1.05] text-white">
-              Join Our
-              <br />
-              Newsletter
-            </h2>
+            <TypedHeading
+              lines={["Join Our", "Newsletter"]}
+              revealed={revealed}
+              nowrap
+              className="font-heading text-[clamp(28px,7vw,64px)] uppercase leading-[1.05] text-white"
+            />
 
             <p className="mt-4 font-body text-[13px] leading-[20px] text-white/90 sm:text-[16px] sm:leading-[22px]">
               Get 10% off your first box, plus first dibs on new flavors and the
               occasional baking secret.
             </p>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-  <input
-    type="email"
-    placeholder="name@email.com"
-    onFocus={() => setFocused(true)}
-    onBlur={() => setFocused(false)}
-    className="w-full rounded-button border border-white/40 bg-white/10 px-5 py-3 font-body text-[16px] sm:text-[16px] text-white placeholder-white/60 outline-none transition-colors focus:border-white sm:max-w-xs sm:text-[16px]"
-  />
+            {submitted ? (
+              <div className="mt-6">
+                <p className="font-heading text-[18px] uppercase leading-none text-white sm:text-[22px]">
+                  You're in
+                </p>
+                <p className="mt-2 font-body text-[13px] leading-[20px] text-white/90 sm:text-[15px]">
+                  Check your inbox — your 10% code is on its way.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <input
+                    type="email"
+                    value={email}
+                    placeholder="name@email.com"
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      if (error) setError(false)
+                    }}
+                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    className={`w-full rounded-button border bg-white/10 px-5 py-3 font-body text-[16px] text-white placeholder-white/60 outline-none transition-colors sm:max-w-xs ${
+                      error ? "border-white/80" : "border-white/40 focus:border-white"
+                    }`}
+                  />
 
-  {/* Coupon stub — the notches are two circles the colour of the card
-      behind it, punched into the left and right edges at the perforation.
-      Tilted a few degrees so it reads as something torn off, matching the
-      rotation language of the process cards. */}
-<PillButton
-  inverted
-  className="self-start sm:self-auto"
-  onMouseEnter={() => setFocused(true)}
-  onMouseLeave={() => setFocused(false)}
->
-  Get 10% Off
-</PillButton>
-</div>
-{/* Fixed-height clip; the stack of names slides up by one line per tick,
-    so only the current flavour is visible through the window. */}
-<div className="mt-5 flex items-center gap-2">
-  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3-fill" />
-  <span className="font-body text-[12px] uppercase tracking-wide text-white/90 sm:text-[13px]">
-    Next drop
-  </span>
-  <div className="h-[18px] overflow-hidden">
-    <div
-      className="transition-transform duration-500 ease-out"
-      style={{ transform: `translateY(-${flavorIndex * 18}px)` }}
-    >
-      {upcomingFlavors.map((flavor) => (
-        <div
-          key={flavor}
-          className="flex h-[18px] items-center whitespace-nowrap font-body text-[12px] font-semibold text-white sm:text-[13px]"
-        >
-          {flavor}
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
+                  <PillButton
+                    inverted
+                    className="self-start sm:self-auto"
+                    onClick={handleSubmit}
+                    onMouseEnter={() => setFocused(true)}
+                    onMouseLeave={() => setFocused(false)}
+                  >
+                    Get 10% Off
+                  </PillButton>
+                </div>
+
+                {error && (
+                  <p className="mt-2 pl-5 font-body text-[12px] text-white/80">
+                    Enter a valid email address
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* Fixed-height clip; the stack of names slides up by one line per
+                tick, so only the current flavour is visible through the window. */}
+            <div className="mt-5 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3-fill" />
+              <span className="font-body text-[12px] uppercase tracking-wide text-white/90 sm:text-[13px]">
+                Next drop
+              </span>
+              <div className="h-[18px] overflow-hidden">
+                <div
+                  className="transition-transform duration-500 ease-out"
+                  style={{ transform: `translateY(-${flavorIndex * 18}px)` }}
+                >
+                  {upcomingFlavors.map((flavor) => (
+                    <div
+                      key={flavor}
+                      className="flex h-[18px] items-center whitespace-nowrap font-body text-[12px] font-semibold text-white sm:text-[13px]"
+                    >
+                      {flavor}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

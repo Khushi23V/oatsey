@@ -1,4 +1,5 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import { TypedHeading } from "./ProcessSteps"
 
 const reviews = [
   {
@@ -6,22 +7,31 @@ const reviews = [
     name: "RIYA",
   },
   {
-    text: "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
-    name: "RIYA",
+    text: "Ordered on a Tuesday, ate one warm on Wednesday. The blackcurrant is properly tart, not just sweet with a berry name slapped on it.",
+    name: "ADITYA",
   },
   {
-    text: "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
-    name: "RIYA",
+    text: "I bake a fair bit myself so I'm picky. These have actual texture — you can feel the oats. Most 'healthy' cookies are just sad and dry.",
+    name: "MEHA",
   },
   {
-    text: "Finally a cookie that doesn't taste like guilt. The chocolate oat one disappeared from my desk in a day — coworkers kept asking where I got them.",
-    name: "RIYA",
+    text: "Bought a box for my mum who's diabetic and very suspicious of desserts. She's now the one placing the reorders.",
+    name: "KABIR",
+  },
+  {
+    text: "The mango one sounded like a gimmick and I was ready to be annoyed. It's my favourite of the five. Genuinely didn't expect that.",
+    name: "SANA",
+  },
+  {
+    text: "Shipping was same-day like they claim. Box arrived intact, cookies weren't crumbs. That's rarer than it should be.",
+    name: "DEV",
   },
 ]
-
 function ReviewCard({ review }) {
   return (
-    <div className="flex aspect-[365/372] w-[300px] shrink-0 flex-col justify-center rounded-tl-[200px] rounded-tr-[200px] rounded-bl-[200px] rounded-br-[45px] bg-white py-8 pr-8 pl-10 shadow-[10px_10px_0_8px_#C6A272] sm:w-[310px] sm:py-[45px] sm:pr-[45px] sm:pl-[54px] md:w-[340px] lg:w-[365px] lg:py-[60px] lg:pr-[60px] lg:pl-[72px]">
+    // Card moves up and left while the shadow pushes further out — the
+    // opposing motion is what reads as lifting off the page.
+    <div className="flex aspect-[365/372] w-[300px] shrink-0 flex-col justify-center rounded-tl-[200px] rounded-tr-[200px] rounded-bl-[200px] rounded-br-[45px] bg-white py-8 pr-8 pl-10 shadow-[10px_10px_0_8px_#C6A272] transition-all duration-300 ease-out hover:-translate-x-1 hover:-translate-y-2 hover:shadow-[16px_16px_0_8px_#C6A272] sm:w-[310px] sm:py-[45px] sm:pr-[45px] sm:pl-[54px] md:w-[340px] lg:w-[365px] lg:py-[60px] lg:pr-[60px] lg:pl-[72px]">
       <div className="flex gap-1 text-secondary-3-bg-2">
         {[...Array(5)].map((_, i) => (
           <span key={i} aria-hidden>
@@ -30,7 +40,7 @@ function ReviewCard({ review }) {
         ))}
       </div>
 
-      <p className="mt-4 font-body text-[14px] font-normal leading-[20px] text-primary-default sm:text-[16px] sm:leading-[22px]">
+      <p className="mt-4 font-body text-[14px] font-medium leading-[20px] text-primary-default sm:text-[16px] sm:leading-[22px]">
         {review.text}
       </p>
 
@@ -62,6 +72,26 @@ function ColorBar() {
 
 function Reviews() {
   const scrollRef = useRef(null)
+  const sectionRef = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.25 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const scrollByCard = (direction) => {
     const el = scrollRef.current
@@ -73,7 +103,7 @@ function Reviews() {
   }
 
   return (
-   <section className="relative isolate z-20 overflow-hidden">
+    <section ref={sectionRef} className="relative isolate z-20 overflow-hidden">
       {/* Beige drip background — scaled up slightly for more presence */}
       <img
         src="/review-bg.svg"
@@ -86,56 +116,73 @@ function Reviews() {
 
       <div className="relative px-6 pt-16 pb-6 md:pt-24 md:pb-8">
         <div className="flex flex-col items-center justify-between gap-10">
-          <h2 className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px]">
-            The People Have Spoken
-          </h2>
+          <TypedHeading
+            lines={["The People Have Spoken"]}
+            revealed={revealed}
+            className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px]"
+          />
 
-<div className="flex shrink-0 items-center gap-0">
-  <button
-    type="button"
-    onClick={() => scrollByCard(-1)}
-    aria-label="Previous reviews"
-    className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
-  >
-    <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
-    <img
-      src="/arrow2.svg"
-      alt=""
-      className="relative h-[50%] w-auto transition-transform duration-300 group-hover/arrow:-translate-x-1"
-    />
-  </button>
+          <div className="flex shrink-0 items-center gap-4">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Previous reviews"
+              className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
+            >
+              <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+              <img
+                src="/arrow2.svg"
+                alt=""
+                className="relative h-[50%] w-auto transition-transform duration-300 group-hover/arrow:-translate-x-1"
+              />
+            </button>
 
-  <button
-    type="button"
-    onClick={() => scrollByCard(1)}
-    aria-label="Next reviews"
-    className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
-  >
-    <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
-    <img
-      src="/arrow2.svg"
-      alt=""
-      className="relative h-[50%] w-auto rotate-[180deg] transition-transform duration-300 group-hover/arrow:-translate-x-1"
-    />
-  </button>
-</div>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Next reviews"
+              className="group/arrow relative flex h-[60px] w-[60px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary-fill shadow-[4px_4px_0_0_#402818] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#402818]"
+            >
+              <span className="absolute inset-0 scale-0 rounded-full bg-primary-default transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+              <img
+                src="/arrow2.svg"
+                alt=""
+                className="relative h-[50%] w-auto rotate-[180deg] transition-transform duration-300 group-hover/arrow:-translate-x-1"
+              />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Stickers — positioned against the whole section (which includes the
           carousel below), not just the heading block, so they stay anchored
           to the cards regardless of how tall the heading area is at a given
-          screen size. */}
-  <img
-  src="/heart.svg"
-  alt=""
-  className="pointer-events-none absolute hidden left-[14%] top-[76%] w-[19%] max-w-[100px] sm:left-[8%] sm:top-[72%] sm:block sm:w-[16%] md:left-[10%] md:top-[72%] md:w-[10%]"
-/>
-<img
-  src="/cookies.svg"
-  alt=""
-  className="pointer-events-none absolute hidden right-[4%] top-[35%] w-[19%] max-w-[110px] sm:right-[6%] sm:top-[30%] sm:block sm:w-[16%] md:right-[8%] md:top-[30%] md:w-[15%]"
-/>
+          screen size. They drift up with opposite rotations so they don't
+          read as a matched pair. */}
+      <img
+        src="/heart.svg"
+        alt=""
+        className="pointer-events-none absolute left-[14%] top-[76%] hidden w-[19%] max-w-[100px] transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] sm:left-[8%] sm:top-[72%] sm:block sm:w-[16%] md:left-[10%] md:top-[72%] md:w-[10%]"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: revealed
+            ? "translateY(0) rotate(0deg)"
+            : "translateY(40px) rotate(-18deg)",
+          transitionDelay: revealed ? "900ms" : "0ms",
+        }}
+      />
+      <img
+        src="/cookies.svg"
+        alt=""
+        className="pointer-events-none absolute right-[4%] top-[35%] hidden w-[19%] max-w-[110px] transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] sm:right-[6%] sm:top-[30%] sm:block sm:w-[16%] md:right-[8%] md:top-[30%] md:w-[15%]"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: revealed
+            ? "translateY(0) rotate(0deg)"
+            : "translateY(40px) rotate(16deg)",
+          transitionDelay: revealed ? "1100ms" : "0ms",
+        }}
+      />
 
       {/* Full-bleed carousel — no section padding, so cards run edge to edge */}
       <div

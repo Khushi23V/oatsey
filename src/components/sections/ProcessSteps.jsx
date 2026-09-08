@@ -1,4 +1,4 @@
-import { useId } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 
 function ProcessCardShape({ fillColor, bgColor, className }) {
   const uid = useId()
@@ -99,6 +99,7 @@ const steps = [
     numberColor: "text-secondary-3-text",
     shapeRotate: "rotate-[13.29deg]",
     textRotate: "rotate-[6.79deg]",
+    photo: "/img1.png"
   },
   {
     number: "02",
@@ -109,6 +110,7 @@ const steps = [
     numberColor: "text-secondary-1-text",
     shapeRotate: "rotate-[0.08deg]",
     textRotate: "rotate-[-6.42deg]",
+    photo: "/img2.png"
   },
   {
     number: "03",
@@ -119,6 +121,7 @@ const steps = [
     numberColor: "text-secondary-2-text",
     shapeRotate: "rotate-[13.0deg]",
     textRotate: "rotate-[6.5deg]",
+    photo: "/img3.png"
   },
 ]
 
@@ -146,7 +149,7 @@ function ProcessCard({ step, className = "" }) {
           {step.heading}
         </h3>
 
-        <p className="mt-auto font-body text-[13px] leading-[18px] text-white sm:text-[16px] sm:leading-[22px]">
+        <p className="mt-auto font-medium text-[13px] leading-[18px] text-white sm:text-[16px] sm:leading-[22px]">
           {step.body}
         </p>
       </div>
@@ -154,10 +157,82 @@ function ProcessCard({ step, className = "" }) {
   )
 }
 
+// Desktop only. Flips to a process photo on hover. The back matches the
+// card's silhouette with rounded corners plus the same rotation, rather
+// than re-deriving the SVG's exact clip path.
+function FlipCard({ step, className = "" }) {
+  return (
+    <div className={`group/flip [perspective:1200px] ${className}`}>
+      <div className="relative aspect-[414.57/456.23] transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] group-hover/flip:[transform:rotateY(180deg)]">
+        <div className="absolute inset-0 [backface-visibility:hidden]">
+          <ProcessCard step={step} className="h-full w-full" />
+        </div>
+
+        {/* Pre-rotated 180 so it reads correctly once the flip lands */}
+        <div
+  className={`absolute inset-[6%] overflow-hidden rounded-[20px] shadow-lg [backface-visibility:hidden] [transform:rotateY(180deg)] ${step.shapeRotate}`}
+>
+  <img src={step.photo} alt="" className="h-full w-full object-cover" />
+</div>
+      </div>
+    </div>
+  )
+}
+
+export function TypedHeading({ lines, revealed, className = "", nowrap = false }) {
+  let offset = 0
+
+  return (
+    <h2 className={className}>
+      {lines.map((line, li) => {
+        const start = offset
+        offset += line.length + 3
+
+        return (
+          <span key={line} className={`block ${nowrap ? "whitespace-nowrap" : ""}`}>
+            {line.split("").map((char, ci) => (
+              <span
+                key={ci}
+                className={`inline-block transition-all duration-[400ms] ease-[cubic-bezier(0.34,1.8,0.64,1)] ${
+                  revealed
+                    ? "translate-y-0 scale-100 opacity-100"
+                    : "translate-y-[0.2em] scale-50 opacity-0"
+                }`}
+                style={{ transitionDelay: `${(start + ci) * 40}ms` }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </span>
+        )
+      })}
+    </h2>
+  )
+}
+
 
 function ProcessSteps() {
+  const ref = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          observer.disconnect()
+        }
+      },
+     { threshold: 0.35 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <>
+    <div ref={ref}>
       {/* Mobile */}
 <section className="px-6 pt-16 pb-0 sm:hidden">
   <div className="relative">
@@ -165,11 +240,11 @@ function ProcessSteps() {
         track ends 80vh early — one wrapper's worth — so it releases at
         the same moment the last card does. */}
     <div className="absolute inset-x-0 top-0 h-[calc(100%-80vh)]">
-      <h2 className="sticky top-32 z-40 text-center font-heading text-[32px] uppercase leading-[1.1] text-black">
-        The Soul Of
-        <br />
-        Our Kitchen
-      </h2>
+<TypedHeading
+  lines={["The Soul Of", "Our Kitchen"]}
+  revealed={revealed}
+  className="sticky top-32 z-40 text-center font-heading text-[32px] uppercase leading-[1.1] text-black"
+/>
     </div>
 
     {/* pt reserves the flow space the now-absolute heading vacated */}
@@ -188,26 +263,49 @@ function ProcessSteps() {
 </section>
 
       {/* Desktop — unchanged */}
-      <section className="hidden px-6 py-16 sm:block md:px-10 md:py-24">
-        <h2 className="text-center font-heading text-[48px] uppercase leading-[1.1] text-black">
-          The Soul Of
-          <br />
-          Our Kitchen
-        </h2>
+<section className="hidden px-6 py-16 sm:block md:px-10 md:py-24">
+  <TypedHeading
+    lines={["The Soul Of", "Our Kitchen"]}
+    revealed={revealed}
+    className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px]"
+  />
 
-        <div className="mt-16 flex justify-center">
-          {steps.map((step, index) => (
-            <ProcessCard
-              key={step.number}
-              step={step}
-              className={`${
-                index === 0 ? "z-10" : index === 1 ? "z-30" : "z-20"
-              } ${index === 0 ? "" : "-ml-16"} w-[320px] md:w-[400px] lg:w-[440px]`}
-            />
-          ))}
-        </div>
-      </section>
-    </>
+  {/* Cards deal out from a centre pile. `group` on the row lets a hovered
+      card push its neighbours aside so the overlapped text is readable. */}
+  <div className="group/row mt-16 flex justify-center">
+    {steps.map((step, index) => (
+ <div
+  key={step.number}
+  className={`transition-all duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+    index === 0 ? "z-10" : index === 1 ? "z-30" : "z-20"
+  } ${index === 0 ? "" : "-ml-16"} hover:z-40`}
+  style={{
+    opacity: revealed ? 1 : 0,
+    transform: revealed
+      ? undefined
+      : `translateX(${index === 0 ? "60%" : index === 2 ? "-60%" : "0"}) scale(0.85)`,
+    transitionDelay: revealed ? `${900 + index * 220}ms` : "0ms",
+  }}
+>
+  {/* Lift and spread get their own wrapper so they run at hover speed,
+      independent of the slow entrance transition above. */}
+  <div
+    className={`transition-transform duration-300 ease-out hover:-translate-y-6 hover:scale-105 ${
+      index === 0
+        ? "hover:-translate-x-8"
+        : index === 2
+          ? "hover:translate-x-8"
+          : ""
+    }`}
+  >
+    <FlipCard step={step} className="w-[320px] md:w-[400px] lg:w-[440px]" />
+  </div>
+</div>
+
+    ))}
+  </div>
+</section>
+  </div>
   )
 }
 
