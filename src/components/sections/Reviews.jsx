@@ -105,14 +105,21 @@ function Reviews() {
     return () => observer.disconnect()
   }, [])
 
-  const scrollByCard = (direction) => {
-    const el = scrollRef.current
-    if (!el) return
-    const card = el.children[0]
-    const gap = 40 // matches gap-10
-    const distance = card ? card.offsetWidth + gap : 400
-    el.scrollBy({ left: direction * distance, behavior: "smooth" })
-  }
+const scrollByCard = (direction) => {
+  const el = scrollRef.current
+  if (!el) return
+
+  const card = el.children[0]
+  // Dynamically pull the applied CSS gap instead of hardcoding
+  const computedGap = parseFloat(window.getComputedStyle(el).gap) || 40
+  const distance = card ? card.offsetWidth + computedGap : 340
+
+  const maxScroll = el.scrollWidth - el.clientWidth
+  // Hard-clamp the destination between 0 and maxScroll
+  const target = Math.min(Math.max(el.scrollLeft + direction * distance, 0), maxScroll)
+
+  el.scrollTo({ left: target, behavior: "smooth" })
+}
 
   return (
     <section ref={sectionRef} className="relative isolate z-20 overflow-hidden">
@@ -197,15 +204,15 @@ function Reviews() {
       />
 
       {/* Full-bleed carousel — no section padding, so cards run edge to edge */}
-     <div
+    {/* Full-bleed carousel — added overscroll-x-contain and snap hints */}
+<div
   ref={scrollRef}
-  className="mt-0 flex gap-10 overflow-x-auto py-4 pl-6 pr-6 sm:gap-20 md:pl-24 md:pr-24 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+  className="mt-0 flex gap-10 overflow-x-auto py-4 pl-6 pr-6 sm:gap-20 md:pl-24 md:pr-24 overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 >
-        {reviews.map((review, i) => (
-          <ReviewCard key={i} review={review} />
-        ))}
-      </div>
-
+  {reviews.map((review, i) => (
+    <ReviewCard key={i} review={review} />
+  ))}
+</div>
       <div className="pb-32 md:pb-48" />
     </section>
   )

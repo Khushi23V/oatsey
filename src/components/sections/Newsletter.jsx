@@ -133,7 +133,7 @@ function Newsletter() {
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-primary-default/45" />
+        <div className="absolute inset-0 bg-neutral-black/45" />
 
         <div className="relative grid grid-cols-1 items-center gap-8 px-6 py-12 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-4 md:px-12 md:py-16">
           <div className="order-first flex justify-center sm:order-none">

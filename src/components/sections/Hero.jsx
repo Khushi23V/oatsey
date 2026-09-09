@@ -34,22 +34,23 @@ function HealthySlot({ ready, sizeClass }) {
 
   return (
     <span
-      className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading leading-none tracking-wide text-primary-fill opacity-0 ${sizeClass} ${
+      className={`absolute left-1/2 top-1/2 whitespace-nowrap font-heading tracking-wide text-primary-fill opacity-0 ${sizeClass} ${
         ready ? "animate-healthy-pop" : ""
       }`}
     >
-      <span className="block h-[1em] cursor-pointer overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-120">
-  <span
-    className="block transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-    style={{ transform: `translateY(-${index}em)` }}
-  >
-    {HEALTHY_WORDS.map((word) => (
-      <span key={word} className="block h-[1em] leading-none">
-        {word}
+      {/* 1. Increased from h-[1em] to h-[1.25em] and adjusted translateY calculation */}
+      <span className="block h-[1.25em] cursor-pointer overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-120">
+        <span
+          className="block transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{ transform: `translateY(-${index * 1.25}em)` }}
+        >
+          {HEALTHY_WORDS.map((word) => (
+            <span key={word} className="flex h-[1.25em] items-center justify-center">
+              {word}
+            </span>
+          ))}
+        </span>
       </span>
-    ))}
-  </span>
-</span>
     </span>
   )
 }
@@ -95,8 +96,8 @@ function MobileHero({ ready }) {
 
   return (
     <img
-      key={c.src}
-      src={c.src}
+  key={c.src}
+  src={c.src}
       alt=""
       className={`absolute max-w-none ${spinning ? "" : "opacity-0"} ${
         spinning
@@ -137,7 +138,7 @@ function MobileHero({ ready }) {
               ready ? "animate-gap-open" : "w-0"
             }`}
           >
-            <HealthySlot ready={ready} sizeClass="text-[0.28em]" />
+            <HealthySlot ready={ready} sizeClass="text-[0.30em]" />
           </span>
           COOKIES?
         </h1>
@@ -177,11 +178,11 @@ function DesktopHero({ ready }) {
     return () => clearTimeout(id)
   }, [ready])
 
-  const cookieClass = entered
-    ? "hover-grow-21"
-    : ready
-      ? "animate-cookie-pop-21 opacity-0"
-      : "rotate-[21deg] opacity-0"
+const cookieClass = entered
+  ? "rotate-[21deg]"
+  : ready
+    ? "animate-cookie-pop-21 opacity-0"
+    : "rotate-[21deg] opacity-0"
 
   return (
     <div className="hidden md:block">
@@ -198,12 +199,13 @@ function DesktopHero({ ready }) {
             className={`absolute left-[-11.7%] top-[8.4%] z-10 w-[35.7%] ${cookieClass}`}
             style={{ animationDelay: "0ms" }}
           />
-          <img
-            src="/cookie.webp"
-            alt=""
-            className={`absolute left-[78.4%] top-[8.4%] z-10 w-[30.8%] ${cookieClass}`}
-            style={{ animationDelay: "130ms" }}
-          />
+         <img
+  data-cookie-source
+  src="/cookie.webp"
+  alt=""
+  className={`absolute left-[78.4%] top-[8.4%] z-10 w-[30.8%] ${cookieClass}`}
+  style={{ animationDelay: "130ms" }}
+/>
           <img
             src="/cookie-2.webp"
             alt=""

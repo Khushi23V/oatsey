@@ -119,11 +119,11 @@ function AddToCartBar({ price }) {
 }
 
 const products = [
-  { name: "Strawberry", name2: "Cheesecake", price: "₹299.00", box: "/box-strawberry.webp", cookie: "/cookie-1.webp", bg: "bg-secondary-1-fill" },
-  { name: "Blackcurrant", name2: "Bliss", price: "₹299.00", box: "/box-blackcurrant.webp", cookie: "/cookie-3.webp", bg: "bg-secondary-2-fill" },
-  { name: "Mango", name2: "Marvel", price: "₹299.00", box: "/box-mango.webp", cookie: "/cookie-2.webp", bg: "bg-secondary-3-fill" },
-  { name: "Tasty", name2: "Tiramisu", price: "₹299.00", box: "/box-tiramisu.webp", cookie: "/cookie-4.webp", bg: "bg-primary-fill" },
-  { name: "OG Chocolate", name2: "Chip", price: "₹249.00", box: "/box-chocochip.webp", cookie: "/cookie.webp", bg: "bg-primary-bg" },
+  { name: "Strawberry", name2: "Cheesecake", price: "₹299", box: "/box-strawberry.webp", cookie: "/cookie-1.webp", bg: "bg-secondary-1-fill" },
+  { name: "Blackcurrant", name2: "Bliss", price: "₹299", box: "/box-blackcurrant.webp", cookie: "/cookie-3.webp", bg: "bg-secondary-2-fill" },
+  { name: "Mango", name2: "Marvel", price: "₹299", box: "/box-mango.webp", cookie: "/cookie-2.webp", bg: "bg-secondary-3-fill" },
+  { name: "Tasty", name2: "Tiramisu", price: "₹299", box: "/box-tiramisu.webp", cookie: "/cookie-4.webp", bg: "bg-primary-fill" },
+  { name: "OG Chocolate", name2: "Chip", price: "₹249", box: "/box-chocochip.webp", cookie: "/cookie.webp", bg: "bg-primary-bg" },
 ]
 
 function ProductCard({ product, revealed, index }) {
@@ -246,9 +246,7 @@ function ProductsCarousel() {
               }`}
               style={{ transitionDelay: `${paragraphDelay}ms` }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud ex
+              Five flavours, all built on rolled oats and no artificial sugar. Baked the day you order, never before.
             </p>
           </div>
 
@@ -297,9 +295,12 @@ function ProductsCarousel() {
             />
           ))}
         </div>
-      </div>
-    </section>
-  )
+              <p className="mt-6 text-center font-body text-[14px] uppercase tracking-wide text-black/80 sm:text-[16px]">
+        Currently shipping to Delhi &amp; Mumbai only
+      </p>
+    </div>
+  </section>
+)
 }
 
 export default ProductsCarousel

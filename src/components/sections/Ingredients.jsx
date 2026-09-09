@@ -132,114 +132,119 @@ function Ingredients() {
     setIndex((i) => (i + dir + flavors.length) % flavors.length)
   }
 
-  return (
-    <section ref={sectionRef} className="py-12 md:py-20">
-      <ColorBar />
+    return (
+  <section ref={sectionRef} className="py-12 md:py-20">
+    <ColorBar />
 
-      <div className="mx-auto max-w-5xl px-6 py-10 sm:py-16 md:px-10 md:py-20">
-        <TypedHeading
-          lines={["What's Inside"]}
-          revealed={revealed}
-          className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-[48px]"
-        />
+    <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16 md:px-10 md:py-20">
+      <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-12">
+        {/* Copy — centred on mobile, left-aligned beside the stage on desktop */}
+        <div className="md:flex-1">
+          <TypedHeading
+            lines={["What's Inside"]}
+            revealed={revealed}
+            className="text-center font-heading text-[32px] uppercase leading-[1.1] text-black sm:text-[40px] md:text-left md:text-[48px]"
+          />
 
-        <p
-          className={`mx-auto mt-3 max-w-md text-center font-body text-[13px] leading-[20px] text-black transition-all duration-700 ease-out sm:text-[15px] ${
-            revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
-          }`}
-          style={{ transitionDelay: revealed ? "200ms" : "0ms" }}
-        >
-          Drag the cookie aside and see exactly what we put in each flavour,
-          ingredient by ingredient.
-        </p>
+          <p
+            className={`mx-auto mt-3 max-w-md text-center font-body text-[13px] leading-[20px] text-black transition-all duration-700 ease-out sm:text-[15px] md:mx-0 md:text-left ${
+              revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+            }`}
+            style={{ transitionDelay: revealed ? "200ms" : "0ms" }}
+          >
+            Drag the cookie aside and see exactly what we put in each flavour,
+            ingredient by ingredient.
+          </p>
 
-        {/* Arrows and stage scale in as one unit, so they arrive together */}
+
+        </div>
+
+        {/* Arrows and stage */}
+                {/* Arrows, stage, and the flavour name beneath */}
         <div
-          className={`mt-4 flex items-center justify-center gap-4 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] sm:gap-8 ${
+          className={`flex w-full flex-col items-center gap-4 transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:w-auto md:flex-1 ${
             revealed ? "scale-100 opacity-100" : "scale-90 opacity-0"
           }`}
           style={{ transitionDelay: revealed ? "400ms" : "0ms" }}
         >
-          <button
-            type="button"
-            onClick={() => step(-1)}
-            aria-label="Previous flavour"
-            className="group/arrow relative flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#C6A272]"
-          >
-            <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
-            <img src="/arrow2.svg" alt="" className="relative h-[45%] w-auto" />
-          </button>
+          <div className="flex w-full items-center justify-center gap-4 sm:gap-6">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Previous flavour"
+              className="group/arrow relative flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#C6A272]"
+            >
+              <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+              <img src="/arrow2.svg" alt="" className="relative h-[45%] w-auto" />
+            </button>
 
-          {/* Stage — ingredients are absolute against this, so their
-              percentages hold at every width. */}
-          <div
-            ref={stageRef}
-            className="relative aspect-[440/340] w-full max-w-[440px] touch-none select-none"
-          >
-            {flavor.items.map((item, i) => {
-              const pos = dragging ? item.scattered : item.clustered
+            <div
+              ref={stageRef}
+              className="relative aspect-[440/340] w-full max-w-[400px] touch-none select-none"
+            >
+              {flavor.items.map((item, i) => {
+                const pos = dragging ? item.scattered : item.clustered
 
-              return (
-                <img
-                  key={item.src + i}
-                  src={item.src}
-                  alt={item.label}
-                  draggable={false}
-                  className="pointer-events-none absolute w-[30%] -translate-x-1/2 -translate-y-1/2 object-contain transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                  style={{
-                    left: `${pos.x}%`,
-                    top: `${pos.y}%`,
-                    opacity: dragging ? 1 : 0.9,
-                    transitionDelay: dragging ? `${i * 40}ms` : "0ms",
-                    zIndex: 1,
-                  }}
-                />
-              )
-            })}
+                return (
+                  <img
+                    key={item.src + i}
+                    src={item.src}
+                    alt={item.label}
+                    draggable={false}
+                    className="pointer-events-none absolute w-[30%] -translate-x-1/2 -translate-y-1/2 object-contain transition-all duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                    style={{
+                      left: `${pos.x}%`,
+                      top: `${pos.y}%`,
+                      opacity: dragging ? 1 : 0.9,
+                      transitionDelay: dragging ? `${i * 40}ms` : "0ms",
+                      zIndex: 1,
+                    }}
+                  />
+                )
+              })}
 
-            {/* Cookie follows the pointer and returns on release */}
-            <img
-              src={flavor.cookie}
-              alt={flavor.name}
-              draggable={false}
-              onPointerDown={(e) => {
-                e.currentTarget.setPointerCapture(e.pointerId)
-                beginDrag(e.clientX, e.clientY)
-              }}
-              className={`absolute left-1/2 top-1/2 z-10 w-full cursor-grab rounded-full object-contain drop-shadow-[8px_8px_12px_rgba(64,40,24,0.3)] active:cursor-grabbing ${
-                dragging
-                  ? ""
-                  : "transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-              }`}
-              style={{
-                transform: `translate(calc(-50% + ${offset.x}px), calc(-50% + ${offset.y}px))`,
-              }}
-            />
+              <img
+                id="flying-cookie-target"
+                src={flavor.cookie}
+                alt={flavor.name}
+                draggable={false}
+                onPointerDown={(e) => {
+                  e.currentTarget.setPointerCapture(e.pointerId)
+                  beginDrag(e.clientX, e.clientY)
+                }}
+                className={`absolute left-1/2 top-1/2 z-10 w-full cursor-grab rounded-full object-contain drop-shadow-[8px_8px_12px_rgba(64,40,24,0.3)] active:cursor-grabbing ${
+                  dragging
+                    ? ""
+                    : "transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                }`}
+                style={{
+                  transform: `translate(calc(-50% + ${offset.x}px), calc(-50% + ${offset.y}px))`,
+                }}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Next flavour"
+              className="group/arrow relative flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#C6A272]"
+            >
+              <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
+              <img src="/arrow2.svg" alt="" className="relative h-[45%] w-auto rotate-180" />
+            </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => step(1)}
-            aria-label="Next flavour"
-            className="group/arrow relative flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.97] active:shadow-[2px_2px_0_0_#C6A272]"
-          >
-            <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/arrow:scale-100" />
-            <img src="/arrow2.svg" alt="" className="relative h-[45%] w-auto rotate-180" />
-          </button>
+          <p className="text-center font-heading text-[22px] uppercase text-neutral-black sm:text-[28px]">
+            {flavor.name}
+          </p>
         </div>
-
-        <p
-          className={`mt-2 text-center font-heading text-[22px] uppercase text-neutral-black transition-all duration-700 ease-out sm:text-[28px] ${
-            revealed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
-          }`}
-        >
-          {flavor.name}
-        </p>
       </div>
+    </div>
 
-      <ColorBar />
-    </section>
-  )
+    <ColorBar />
+  </section>
+)
+
 }
 
 export default Ingredients

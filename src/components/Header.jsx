@@ -1,5 +1,6 @@
 import { useState } from "react"
 import MobileMenu from "./MobileMenu"
+import CartPanel from "./CartPanel"
 
 
 const navLinks = [
@@ -13,6 +14,7 @@ const navLinks = [
 
 function Header({ hidden = false, scrolled = false }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
   return (
     <>
     <header
@@ -71,10 +73,7 @@ function Header({ hidden = false, scrolled = false }) {
 
           {/* Cart — same sweep language as the pill buttons: the fill grows
               from the circle and the icon flips to brown as it lands. */}
-          <a
-            href="#cart" data-concept
-  aria-label="Cart"
-  className="group/cart relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.94] active:shadow-[2px_2px_0_0_#C6A272]"
+          <button type="button" onClick={() => setCartOpen(true)} aria-label="Cart" className="group/cart relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.94] active:shadow-[2px_2px_0_0_#C6A272]"
 >
             <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/cart:scale-100" />
             <img
@@ -82,19 +81,20 @@ function Header({ hidden = false, scrolled = false }) {
               alt=""
               className="relative h-[45%] w-auto transition-transform duration-300 group-hover/cart:scale-110"
             />
-          </a>
+          </button>
         </div>
 
        {/* Mobile cart — same treatment as the desktop one */}
-<a
-  href="#cart"
-  data-concept
+{/* Mobile cart — same treatment as the desktop one */}
+<button
+  type="button"
+  onClick={() => setCartOpen(true)}
   aria-label="Cart"
   className="group/cart relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-default shadow-[4px_4px_0_0_#C6A272] transition-all duration-100 active:scale-[0.94] active:shadow-[2px_2px_0_0_#C6A272] md:hidden"
 >
   <span className="absolute inset-0 scale-0 rounded-full bg-primary-fill transition-transform duration-500 ease-out group-hover/cart:scale-100" />
   <img src="/cart.svg" alt="" className="relative h-[45%] w-auto" />
-</a>
+</button>
       </div>
       
     </header>
@@ -103,6 +103,7 @@ function Header({ hidden = false, scrolled = false }) {
       onClose={() => setMenuOpen(false)}
       links={navLinks}
     />
+    <CartPanel open={cartOpen} onClose={() => setCartOpen(false)} />
   </>
   )
 }

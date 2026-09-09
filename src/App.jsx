@@ -4,8 +4,8 @@ import Header from "./components/Header"
 import Hero from "./components/sections/Hero"
 import Marquees from "./components/sections/Marquees"
 import Story from "./components/sections/Story"
+import FlyingCookie from "./components/FlyingCookie"
 
-import Flavors from "./components/sections/Flavors"
 import ProductsCarousel from "./components/sections/ProductsCarousel"
 import TrustBadges from "./components/sections/TrustBadges"
 import ProcessSteps from "./components/sections/ProcessSteps"
@@ -108,6 +108,7 @@ useEffect(() => {
         <Faq />
         <Newsletter />
       </div>
+      {!loading && !isMobile && <FlyingCookie />}
 <ConceptModal open={conceptOpen} onClose={() => setConceptOpen(false)} />
       <Footer />
     </>

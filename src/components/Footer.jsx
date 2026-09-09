@@ -175,60 +175,17 @@ function Footer() {
               <EmailSignup />
 
               <div className="mt-5 flex items-center gap-3">
-                <SocialIcon label="Instagram">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    className="h-4 w-4"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" />
-                  </svg>
+                 <SocialIcon label="Instagram">
+               <img src="/instagram.svg" alt="Instagram" className="h-4 w-4" />
                 </SocialIcon>
                 <SocialIcon label="LinkedIn">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    className="h-4 w-4"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="3" />
-                    <line x1="8" y1="10" x2="8" y2="16" />
-                    <circle cx="8" cy="7" r="0.6" fill="currentColor" />
-                    <path d="M12 16v-3.5a2 2 0 0 1 4 0V16" />
-                    <line x1="12" y1="10" x2="12" y2="16" />
-                  </svg>
+                  <img src="/linkedin.svg" alt="LinkedIn" className="h-3 w-3" />
                 </SocialIcon>
                 <SocialIcon label="YouTube">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    className="h-4 w-4"
-                  >
-                    <rect x="3" y="6" width="18" height="12" rx="4" />
-                    <path
-                      d="M11 10l4 2-4 2z"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                  </svg>
+                  <img src="/youtube.svg" alt="YouTube" className="h-4 w-4" />
                 </SocialIcon>
                 <SocialIcon label="Call us">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    className="h-4 w-4"
-                  >
-                    <path d="M6.5 3.5c1 0 2 2 2 3s-1 1.5-1 2.5 1.5 3.5 3 5 4 3 5 3 1.5-1 2.5-1 3 1 3 2-1.5 2.5-3 2.5c-4 0-11-7-11-11 0-1.5.5-3 2.5-3z" />
-                  </svg>
+                  <img src="/phone.svg" alt="phone" className="h-4 w-4" />
                 </SocialIcon>
               </div>
             </div>

@@ -14,7 +14,7 @@ const faqs = [
   {
     question: "Are these actually sugar-free?",
     answer:
-      "No refined sugar, not sugar-free. We sweeten with dates and jaggery, so there's still natural sugar in there — just nothing processed.",
+      "No refined sugar, not sugar-free. We sweeten with monk fruit sweetener, so there's still natural sugar in there — just nothing processed.",
     circleBg: "bg-secondary-1-fill",
     hoverBorder: "hover:border-secondary-1-fill",
     openBg: "bg-secondary-1-bg",
@@ -30,7 +30,7 @@ const faqs = [
   {
     question: "What's actually in them?",
     answer:
-      "Rolled oats, dates, jaggery, cold-pressed oils, and whatever the flavour calls for. The full list is printed on every box, no fine print.",
+      "Rolled oats, monk fruit sweetener, and whatever the flavour calls for. The full list is printed on every box, no fine print.",
     circleBg: "bg-primary-fill",
     hoverBorder: "hover:border-primary-fill",
     openBg: "bg-primary-bg",
