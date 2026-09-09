@@ -128,7 +128,7 @@ style={{
 
 
   <div className="mt-5 flex justify-center">
-    <PillButton href="https://www.behance.net/khushiverma">
+    <PillButton href="https://www.behance.net/gallery/255487757/oatsey-Cookie-Brand-Identity-UIUX-Case-Study">
       Read The Case Study
     </PillButton>
   </div>
